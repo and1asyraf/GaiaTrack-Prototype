@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GaiaTrack - Analyst Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <img src="assets/logo.png" alt="GaiaTrack Logo" class="logo">
+                <h2>GaiaTrack</h2>
+            </div>
+            <ul class="nav-links">
+                <li class="nav-item active">
+                    <a href="analyst-dashboard.html">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#reports">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#alerts">
+                        <i class="fas fa-bell"></i>
+                        <span>Alerts</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#analysis">
+                        <i class="fas fa-microscope"></i>
+                        <span>Analysis</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <a href="index.html" class="logout-link">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </nav>
+
+        <!-- Sidebar Toggle Button -->
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle Sidebar">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+
+        <div class="main-content">
+            <header>
+                <h1>Environmental Monitoring</h1>
+                <div class="user-info">
+                    <span>Welcome, <span id="username">Analyst</span></span>
+                </div>
+            </header>
+
+            <main>
+                <section class="dashboard-grid">
+                    <!-- Primary Monitoring Section -->
+                    <div class="card full-width">
+                        <h2>Sensor Response Trends</h2>
+                        <div class="chart-container">
+                            <canvas id="sensorTrendsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Environmental Context -->
+                    <div class="card half-width">
+                        <h2>Environmental Context</h2>
+                        <div class="chart-container">
+                            <canvas id="envContextChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- AI Predictions -->
+                    <div class="card half-width">
+                        <h2>AI Predictions vs Actual</h2>
+                        <div class="chart-container">
+                            <canvas id="aiPredictionsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="card third-width">
+                        <h2>Quick Actions</h2>
+                        <div class="quick-actions">
+                            <button class="action-button primary">Generate Report</button>
+                            <button class="action-button">Export Data</button>
+                            <button class="action-button">Set Alerts</button>
+                            <button class="action-button">Contact Manager</button>
+                        </div>
+                    </div>
+
+                    <!-- Pollution Heatmap -->
+                    <div class="card third-width">
+                        <h2>Pollution Heatmap</h2>
+                        <div class="chart-container">
+                            <canvas id="pollutionHeatmap"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Recent Alerts -->
+                    <div class="card third-width">
+                        <h2>Recent Alerts</h2>
+                        <div class="alerts-list">
+                            <!-- Alerts will be dynamically added here -->
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <!-- Add Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="analyst-dashboard.js"></script>
+</body>
+</html> 

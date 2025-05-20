@@ -1,0 +1,597 @@
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    background-color: #f5f6fa;
+    color: #2c3e50;
+}
+
+/* Login Page Styles */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.login-card {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-card h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.login-card h2 {
+    color: #7f8c8d;
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #34495e;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #2980b9;
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f5f6fa;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 250px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.sidebar.collapsed {
+    transform: translateX(-250px);
+}
+
+.sidebar.expanded {
+    transform: translateX(0);
+}
+
+.sidebar-toggle {
+    position: fixed;
+    left: 250px;
+    top: 20px;
+    background-color: #2c3e50;
+    color: #ecf0f1;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+    transition: left 0.3s ease;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+}
+
+.sidebar-toggle.collapsed {
+    left: 0;
+}
+
+.sidebar-toggle.expanded {
+    left: 250px;
+}
+
+.sidebar-toggle i {
+    transition: transform 0.3s ease;
+}
+
+.sidebar-toggle.collapsed i {
+    transform: rotate(180deg);
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #34495e;
+    margin-bottom: 1rem;
+}
+
+.sidebar-header .logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 1rem;
+    background-color: #ffffff;
+    border-radius: 50%;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-header .logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.sidebar-header h2 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #ecf0f1;
+}
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.nav-item {
+    margin-bottom: 0.5rem;
+}
+
+.nav-item a {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: #ecf0f1;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.nav-item a:hover {
+    background-color: #34495e;
+}
+
+.nav-item.active a {
+    background-color: #3498db;
+}
+
+.nav-item i {
+    width: 20px;
+    margin-right: 10px;
+}
+
+.sidebar-footer {
+    padding-top: 1rem;
+    border-top: 1px solid #34495e;
+}
+
+.sidebar-footer .logout-link {
+    display: flex;
+    align-items: center;
+    color: #e74c3c;
+    text-decoration: none;
+    padding: 0.75rem 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.sidebar-footer .logout-link:hover {
+    background-color: #34495e;
+}
+
+/* Main Content Area */
+.main-content {
+    flex-grow: 1;
+    margin-left: 250px;
+    padding: 0.5rem;
+    transition: margin-left 0.3s ease;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.main-content.expanded {
+    margin-left: 0;
+}
+
+/* Update existing header styles */
+header {
+    background-color: #fff;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #2c3e50;
+    padding-left: 1rem;
+    position: relative;
+}
+
+header h1::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 70%;
+    background-color: #3498db;
+    border-radius: 2px;
+}
+
+/* Update dashboard grid */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 0.75rem;
+    padding: 0.5rem;
+    min-height: calc(100vh - 60px);
+}
+
+/* Card sizes */
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    min-height: 250px;
+}
+
+.card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: #2c3e50;
+}
+
+/* Full width card */
+.card.full-width {
+    grid-column: span 12;
+    min-height: 300px;
+}
+
+/* Half width cards */
+.card.half-width {
+    grid-column: span 6;
+    min-height: 300px;
+}
+
+/* Third width cards */
+.card.third-width {
+    grid-column: span 4;
+    min-height: 250px;
+}
+
+/* Quarter width cards */
+.card.quarter-width {
+    grid-column: span 3;
+    min-height: 200px;
+}
+
+/* Chart container */
+.chart-container {
+    flex: 1;
+    position: relative;
+    min-height: 200px;
+}
+
+/* Lists and Grids inside cards */
+.users-list,
+.tasks-list,
+.alerts-list,
+.reports-list,
+.kpi-grid,
+.settings-grid,
+.quick-actions,
+.actions-grid {
+    overflow-y: auto;
+    max-height: calc(100% - 40px);
+    padding-right: 5px;
+}
+
+/* Scrollbar styling */
+.main-content::-webkit-scrollbar,
+.chart-container::-webkit-scrollbar,
+.users-list::-webkit-scrollbar,
+.tasks-list::-webkit-scrollbar,
+.alerts-list::-webkit-scrollbar,
+.reports-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.main-content::-webkit-scrollbar-track,
+.chart-container::-webkit-scrollbar-track,
+.users-list::-webkit-scrollbar-track,
+.tasks-list::-webkit-scrollbar-track,
+.alerts-list::-webkit-scrollbar-track,
+.reports-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.main-content::-webkit-scrollbar-thumb,
+.chart-container::-webkit-scrollbar-thumb,
+.users-list::-webkit-scrollbar-thumb,
+.tasks-list::-webkit-scrollbar-thumb,
+.alerts-list::-webkit-scrollbar-thumb,
+.reports-list::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover,
+.chart-container::-webkit-scrollbar-thumb:hover,
+.users-list::-webkit-scrollbar-thumb:hover,
+.tasks-list::-webkit-scrollbar-thumb:hover,
+.alerts-list::-webkit-scrollbar-thumb:hover,
+.reports-list::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(8, 1fr);
+    }
+    
+    .card.quarter-width {
+        grid-column: span 4;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Sidebar adjustments */
+    .sidebar {
+        transform: translateX(-250px);
+        width: 250px;
+    }
+
+    .sidebar.collapsed {
+        transform: translateX(-250px);
+    }
+
+    .sidebar.expanded {
+        transform: translateX(0);
+    }
+
+    .sidebar-toggle {
+        left: 0;
+        top: 10px;
+        padding: 8px;
+        background-color: #2c3e50;
+        color: #ecf0f1;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        z-index: 1001;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px;
+        height: 30px;
+    }
+
+    .sidebar-toggle.collapsed {
+        left: 0;
+    }
+
+    .sidebar-toggle.expanded {
+        left: 250px;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 0.25rem;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* Header adjustments */
+    header {
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+        width: 100%;
+    }
+
+    header h1 {
+        font-size: 1rem;
+        padding-left: 0.75rem;
+    }
+
+    header h1::before {
+        width: 3px;
+    }
+
+    .user-info {
+        font-size: 0.9rem;
+    }
+
+    /* Dashboard grid adjustments */
+    .dashboard-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.25rem;
+        width: 100%;
+    }
+
+    /* Card adjustments */
+    .card {
+        width: 100%;
+        padding: 0.75rem;
+        min-height: 200px;
+        margin-bottom: 0.5rem;
+    }
+
+    .card h2 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    /* Override all card width classes for mobile */
+    .card.full-width,
+    .card.half-width,
+    .card.third-width,
+    .card.quarter-width {
+        width: 100%;
+        min-height: 200px;
+    }
+
+    /* Chart container adjustments */
+    .chart-container {
+        min-height: 150px;
+        width: 100%;
+    }
+
+    /* List and grid adjustments */
+    .users-list,
+    .tasks-list,
+    .alerts-list,
+    .reports-list {
+        max-height: 150px;
+        width: 100%;
+    }
+
+    .user-item,
+    .task-item,
+    .alert-item,
+    .report-item {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+        width: 100%;
+    }
+
+    /* KPI grid adjustments */
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    /* Settings grid adjustments */
+    .settings-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        width: 100%;
+    }
+}
+
+/* Login page responsive adjustments */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 1rem;
+    }
+
+    .login-card {
+        padding: 1.5rem;
+    }
+
+    .login-card h1 {
+        font-size: 1.5rem;
+    }
+
+    .login-card h2 {
+        font-size: 1rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .form-group label {
+        font-size: 0.9rem;
+    }
+
+    .form-group input,
+    .form-group select {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    .login-button {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Additional breakpoint for very small devices */
+@media (max-width: 480px) {
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .user-item,
+    .task-item,
+    .alert-item,
+    .report-item {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .user-actions,
+    .task-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+} 
