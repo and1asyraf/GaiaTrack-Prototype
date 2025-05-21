@@ -17,23 +17,87 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebarToggle = document.getElementById('sidebarToggle');
     const toggleIcon = sidebarToggle.querySelector('i');
 
-    // Check if sidebar state is saved in localStorage
-    const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-    if (isSidebarCollapsed) {
+    // Function to check if device is mobile
+    const isMobile = () => window.innerWidth <= 768;
+
+    // Function to set mobile state
+    const setMobileState = () => {
         sidebar.classList.add('collapsed');
+        sidebar.classList.remove('expanded');
         mainContent.classList.add('expanded');
         sidebarToggle.classList.add('collapsed');
+        sidebarToggle.classList.remove('expanded');
+    };
+
+    // Function to set desktop state
+    const setDesktopState = (isCollapsed) => {
+        if (isCollapsed) {
+            sidebar.classList.add('collapsed');
+            sidebar.classList.remove('expanded');
+            mainContent.classList.add('expanded');
+            sidebarToggle.classList.add('collapsed');
+            sidebarToggle.classList.remove('expanded');
+        } else {
+            sidebar.classList.remove('collapsed');
+            sidebar.classList.add('expanded');
+            mainContent.classList.remove('expanded');
+            sidebarToggle.classList.remove('collapsed');
+            sidebarToggle.classList.add('expanded');
+        }
+    };
+
+    // Initialize sidebar state
+    const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+    if (isMobile()) {
+        setMobileState();
+    } else {
+        setDesktopState(isSidebarCollapsed);
     }
 
+    // Toggle sidebar
     sidebarToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('collapsed');
-        sidebar.classList.toggle('expanded');
-        mainContent.classList.toggle('expanded');
-        sidebarToggle.classList.toggle('collapsed');
-        sidebarToggle.classList.toggle('expanded');
-        
-        // Save sidebar state to localStorage
-        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
+        if (isMobile()) {
+            // For mobile, we want to show the sidebar when it's collapsed
+            if (sidebar.classList.contains('collapsed')) {
+                sidebar.classList.remove('collapsed');
+                sidebar.classList.add('expanded');
+                mainContent.classList.remove('expanded');
+                sidebarToggle.classList.remove('collapsed');
+                sidebarToggle.classList.add('expanded');
+            } else {
+                sidebar.classList.add('collapsed');
+                sidebar.classList.remove('expanded');
+                mainContent.classList.add('expanded');
+                sidebarToggle.classList.add('collapsed');
+                sidebarToggle.classList.remove('expanded');
+            }
+        } else {
+            // For desktop, toggle the state and save it
+            const willBeCollapsed = !sidebar.classList.contains('collapsed');
+            if (willBeCollapsed) {
+                sidebar.classList.add('collapsed');
+                sidebar.classList.remove('expanded');
+                mainContent.classList.add('expanded');
+                sidebarToggle.classList.add('collapsed');
+                sidebarToggle.classList.remove('expanded');
+            } else {
+                sidebar.classList.remove('collapsed');
+                sidebar.classList.add('expanded');
+                mainContent.classList.remove('expanded');
+                sidebarToggle.classList.remove('collapsed');
+                sidebarToggle.classList.add('expanded');
+            }
+            localStorage.setItem('sidebarCollapsed', willBeCollapsed);
+        }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        if (isMobile()) {
+            setMobileState();
+        } else {
+            setDesktopState(isSidebarCollapsed);
+        }
     });
 
     // AI-like data generation functions
