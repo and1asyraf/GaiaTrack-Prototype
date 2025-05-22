@@ -298,6 +298,13 @@ header h1::before {
     display: flex;
     flex-direction: column;
     min-height: 250px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .card h2 {
@@ -585,4 +592,236 @@ header h1::before {
         width: 100%;
         justify-content: space-between;
     }
+}
+
+/* Overlay/Modal styles */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.overlay.active {
+    display: flex;
+    opacity: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background-color: white;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.overlay.active .modal {
+    transform: scale(1);
+}
+
+.modal-header {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 1;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #2c3e50;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #7f8c8d;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.2s ease;
+}
+
+.close-button:hover {
+    color: #e74c3c;
+}
+
+.modal-content {
+    padding: 1.5rem;
+}
+
+/* Modal content specific styles */
+.modal-content .chart-container {
+    height: 400px;
+    margin-bottom: 1rem;
+}
+
+.modal-content .users-list {
+    max-height: none;
+}
+
+.modal-content .settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.modal-content .setting-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.modal-content .setting-item label {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.modal-content .setting-item input,
+.modal-content .setting-item select {
+    padding: 0.5rem;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Responsive adjustments for modal */
+@media (max-width: 768px) {
+    .modal {
+        width: 95%;
+        margin: 1rem;
+    }
+
+    .modal-content .settings-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-content .chart-container {
+        height: 300px;
+    }
+}
+
+/* Modal content component styles */
+.health-metrics,
+.activity-stats,
+.resource-stats,
+.security-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.metric,
+.stat {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.metric h3,
+.stat h3 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.metric p,
+.stat p {
+    color: #7f8c8d;
+    margin: 0.25rem 0;
+    font-size: 0.9rem;
+}
+
+.setting-description {
+    color: #7f8c8d;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+/* User management modal styles */
+.modal-content .users-list {
+    margin-bottom: 1rem;
+}
+
+.modal-content .user-item {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr 2fr 1fr;
+    gap: 1rem;
+    align-items: center;
+}
+
+.modal-content .user-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.modal-content .action-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+
+.modal-content .action-button[data-action="edit"] {
+    background-color: #3498db;
+    color: white;
+}
+
+.modal-content .action-button[data-action="delete"] {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.modal-content .action-button[data-action="reset"] {
+    background-color: #f1c40f;
+    color: #2c3e50;
+}
+
+.modal-content .action-button:hover {
+    opacity: 0.9;
+}
+
+/* Add user button styles */
+.add-user-button,
+.save-settings-button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: #2ecc71;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.add-user-button:hover,
+.save-settings-button:hover {
+    background-color: #27ae60;
 } 

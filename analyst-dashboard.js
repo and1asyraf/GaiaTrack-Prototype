@@ -269,6 +269,129 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    // Initialize Air Quality Analysis Charts
+    const aqiTrendsChart = new Chart(document.getElementById('aqiTrendsChart'), {
+        type: 'line',
+        data: {
+            labels: ['6h ago', '5h ago', '4h ago', '3h ago', '2h ago', '1h ago', 'Now'],
+            datasets: [{
+                label: 'AQI',
+                data: [65, 70, 68, 72, 75, 73, 75],
+                borderColor: '#3498db',
+                tension: 0.4,
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'AQI Trends'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+
+    const pollutantAnalysisChart = new Chart(document.getElementById('pollutantAnalysisChart'), {
+        type: 'bar',
+        data: {
+            labels: ['CO', 'NO2', 'Benzene'],
+            datasets: [{
+                label: 'Current Levels',
+                data: [2.5, 15, 0.8],
+                backgroundColor: [
+                    '#e74c3c',
+                    '#3498db',
+                    '#2ecc71'
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Pollutant Levels'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    const environmentalConditionsChart = new Chart(document.getElementById('environmentalConditionsChart'), {
+        type: 'line',
+        data: {
+            labels: ['6h ago', '5h ago', '4h ago', '3h ago', '2h ago', '1h ago', 'Now'],
+            datasets: [{
+                label: 'Temperature (°C)',
+                data: [21, 21.5, 22, 22.5, 22, 21.8, 22],
+                borderColor: '#e67e22',
+                tension: 0.4,
+                fill: false
+            }, {
+                label: 'Humidity (%)',
+                data: [45, 44, 46, 45, 44, 45, 45],
+                borderColor: '#3498db',
+                tension: 0.4,
+                fill: false
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Environmental Conditions'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+
+    const timeAnalysisChart = new Chart(document.getElementById('timeAnalysisChart'), {
+        type: 'bar',
+        data: {
+            labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+            datasets: [{
+                label: 'Average AQI',
+                data: [65, 68, 72, 75, 73, 70],
+                backgroundColor: '#3498db'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Time-based Analysis'
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: false
+                }
+            }
+        }
+    });
+
     // Real-time data updates
     setInterval(() => {
         // Update sensor data with trends and anomalies
@@ -319,6 +442,33 @@ document.addEventListener('DOMContentLoaded', function() {
             predictNextValue(predictions.CO.slice(0, i + 1))
         );
         aiPredictionsChart.update();
+
+        // Update AQI trends
+        const newAQI = Math.floor(Math.random() * 200);
+        aqiTrendsChart.data.datasets[0].data.shift();
+        aqiTrendsChart.data.datasets[0].data.push(newAQI);
+        aqiTrendsChart.update();
+
+        // Update pollutant analysis
+        pollutantAnalysisChart.data.datasets[0].data = [
+            (Math.random() * 5).toFixed(1),
+            (Math.random() * 30).toFixed(1),
+            (Math.random() * 2).toFixed(1)
+        ];
+        pollutantAnalysisChart.update();
+
+        // Update environmental conditions
+        environmentalConditionsChart.data.datasets[0].data.shift();
+        environmentalConditionsChart.data.datasets[0].data.push(20 + Math.random() * 5);
+        environmentalConditionsChart.data.datasets[1].data.shift();
+        environmentalConditionsChart.data.datasets[1].data.push(40 + Math.random() * 20);
+        environmentalConditionsChart.update();
+
+        // Update time analysis
+        timeAnalysisChart.data.datasets[0].data = timeAnalysisChart.data.datasets[0].data.map(value =>
+            Math.max(0, Math.min(100, value + (Math.random() * 10 - 5)))
+        );
+        timeAnalysisChart.update();
 
         // Check for anomalies and update alerts
         checkForAnomalies();

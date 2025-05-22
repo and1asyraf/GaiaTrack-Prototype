@@ -1,0 +1,71 @@
+Dashboard Content Breakdown:
+
+1. Admin Dashboard (admin-dashboard.html):
+- System Health Overview: Displays overall system performance, uptime, and critical metrics
+- User Management: List of users with edit/delete actions and add new user functionality
+- System Settings: 
+  * Data retention period configuration
+  * Backup frequency settings
+  * Alert threshold settings
+  * Maintenance window selection
+- User Activity: Chart showing user login patterns and system usage
+- System Resource Usage: Chart displaying system resource consumption
+- Security Events: Chart tracking security-related incidents and alerts
+
+2. Floor Staff Dashboard (floor-staff-dashboard.html):
+- Air Quality Index (AQI):
+  * Color-coded indicator (Green to Red)
+  * Overall air quality score
+  * Last updated timestamp
+- Key Pollutant Levels:
+  * Carbon Monoxide (CO) in ppm
+  * Nitrogen Dioxide (NO2) in ppb
+  * Benzene in ppb
+- Environmental Conditions:
+  * Current temperature
+  * Relative humidity
+  * Time of last measurement
+- Zone Status: Status of different zones (A, B, C, D) with their individual readings
+- Maintenance Schedule: Upcoming maintenance tasks
+- Current Tasks: List of tasks with completion buttons
+  * Sensor calibration checks
+  * Filter replacements
+  * Routine maintenance
+- Quick Actions:
+  * Report Issue
+  * Request Supplies
+  * View Instructions
+  * Contact Supervisor
+- Recent Alerts: List of current alerts and warnings
+
+3. Manager Dashboard (manager-dashboard.html):
+- Compliance Status: Chart showing compliance metrics and trends
+- Zone Performance: Chart comparing performance across different zones
+- Resource Utilization: Chart displaying resource usage and efficiency
+- Cost Analysis: Chart showing cost metrics and savings
+- Key Performance Indicators:
+  * Compliance Rate
+  * Resource Efficiency
+  * Cost Savings
+  * Staff Productivity
+- Recent Reports:
+  * Monthly Compliance Report
+  * Resource Utilization Analysis
+  * Cost Optimization Report
+
+4. Analyst Dashboard (analyst-dashboard.html):
+- Air Quality Analysis:
+  * AQI trends and patterns
+  * Pollutant level analysis (CO, NO2, Benzene)
+  * Environmental condition trends (Temperature, Humidity)
+  * Time-based analysis of measurements
+- Sensor Response Trends: Chart showing sensor data patterns
+- Environmental Context: Chart displaying environmental factors
+- AI Predictions: Chart comparing AI predictions with actual readings
+- Pollution Heatmap: Visual representation of pollution levels
+- Quick Actions:
+  * Generate Report
+  * Export Data
+  * Set Alerts
+  * Contact Manager
+- Recent Alerts: List of current environmental alerts
