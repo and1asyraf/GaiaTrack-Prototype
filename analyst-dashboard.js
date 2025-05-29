@@ -14,19 +14,94 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialize charts
     initializeCharts();
 
-    // Sidebar toggle functionality
-    const sidebarToggle = document.getElementById('sidebarToggle');
+    // Sidebar Toggle Functionality
     const sidebar = document.querySelector('.sidebar');
     const mainContent = document.querySelector('.main-content');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const toggleIcon = sidebarToggle.querySelector('i');
 
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
-            mainContent.classList.toggle('expanded');
-            this.classList.toggle('collapsed');
-            this.classList.toggle('expanded');
-        });
+    // Function to check if device is mobile
+    const isMobile = () => window.innerWidth <= 768;
+
+    // Function to set mobile state
+    const setMobileState = () => {
+        sidebar.classList.add('collapsed');
+        sidebar.classList.remove('expanded');
+        mainContent.classList.add('expanded');
+        sidebarToggle.classList.add('collapsed');
+        sidebarToggle.classList.remove('expanded');
+    };
+
+    // Function to set desktop state
+    const setDesktopState = (isCollapsed) => {
+        if (isCollapsed) {
+            sidebar.classList.add('collapsed');
+            sidebar.classList.remove('expanded');
+            mainContent.classList.add('expanded');
+            sidebarToggle.classList.add('collapsed');
+            sidebarToggle.classList.remove('expanded');
+        } else {
+            sidebar.classList.remove('collapsed');
+            sidebar.classList.add('expanded');
+            mainContent.classList.remove('expanded');
+            sidebarToggle.classList.remove('collapsed');
+            sidebarToggle.classList.add('expanded');
+        }
+    };
+
+    // Initialize sidebar state
+    const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+    if (isMobile()) {
+        setMobileState();
+    } else {
+        setDesktopState(isSidebarCollapsed);
     }
+
+    // Toggle sidebar
+    sidebarToggle.addEventListener('click', () => {
+        if (isMobile()) {
+            // For mobile, we want to show the sidebar when it's collapsed
+            if (sidebar.classList.contains('collapsed')) {
+                sidebar.classList.remove('collapsed');
+                sidebar.classList.add('expanded');
+                mainContent.classList.remove('expanded');
+                sidebarToggle.classList.remove('collapsed');
+                sidebarToggle.classList.add('expanded');
+            } else {
+                sidebar.classList.add('collapsed');
+                sidebar.classList.remove('expanded');
+                mainContent.classList.add('expanded');
+                sidebarToggle.classList.add('collapsed');
+                sidebarToggle.classList.remove('expanded');
+            }
+        } else {
+            // For desktop, toggle the state and save it
+            const willBeCollapsed = !sidebar.classList.contains('collapsed');
+            if (willBeCollapsed) {
+                sidebar.classList.add('collapsed');
+                sidebar.classList.remove('expanded');
+                mainContent.classList.add('expanded');
+                sidebarToggle.classList.add('collapsed');
+                sidebarToggle.classList.remove('expanded');
+            } else {
+                sidebar.classList.remove('collapsed');
+                sidebar.classList.add('expanded');
+                mainContent.classList.remove('expanded');
+                sidebarToggle.classList.remove('collapsed');
+                sidebarToggle.classList.add('expanded');
+            }
+            localStorage.setItem('sidebarCollapsed', willBeCollapsed);
+        }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        if (isMobile()) {
+            setMobileState();
+        } else {
+            setDesktopState(isSidebarCollapsed);
+        }
+    });
 
     // Overlay/Modal functionality
     const overlay = document.getElementById('overlay');
