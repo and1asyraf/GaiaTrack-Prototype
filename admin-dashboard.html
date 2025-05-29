@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GaiaTrack - Admin Dashboard</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin-dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -77,92 +78,126 @@
             <main>
                 <section class="dashboard-grid">
                     <!-- System Health -->
-                    <div class="card half-width">
-                        <h2>System Health Overview</h2>
+                    <div class="card system-health">
+                        <div class="card-header">
+                            <h2>System Health Overview</h2>
+                            <div class="tooltip-icon" data-tooltip="Monitors overall system performance, resource usage, and critical metrics to ensure optimal operation" onclick="showTooltipModal(this, event)">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="chart-container">
                             <canvas id="systemHealthChart"></canvas>
                         </div>
                     </div>
 
                     <!-- User Management -->
-                    <div class="card half-width">
-                        <h2>User Management</h2>
+                    <div class="card user-management">
+                        <div class="card-header">
+                            <h2>User Management</h2>
+                            <div class="tooltip-icon" data-tooltip="Manage user accounts, roles, and permissions. Add, edit, or remove users from the system" onclick="showTooltipModal(this, event)">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="users-list">
                             <div class="user-item" data-user-id="1">
                                 <span class="user-name">John Doe</span>
-                                <span class="user-role">Analyst</span>
+                                <span class="user-role" data-tooltip="Can view and analyze data, but cannot modify system settings" onclick="showTooltipModal(this, event)">Analyst</span>
                                 <div class="user-actions">
-                                    <button class="action-button" data-action="edit">Edit</button>
-                                    <button class="action-button" data-action="delete">Delete</button>
+                                    <button class="action-button" data-action="edit" data-tooltip="Modify user details and permissions" onclick="showTooltipModal(this, event)">Edit</button>
+                                    <button class="action-button" data-action="delete" data-tooltip="Remove user from the system" onclick="showTooltipModal(this, event)">Delete</button>
                                 </div>
                             </div>
                             <div class="user-item" data-user-id="2">
                                 <span class="user-name">Jane Smith</span>
-                                <span class="user-role">Manager</span>
+                                <span class="user-role" data-tooltip="Can manage users and view all system data" onclick="showTooltipModal(this, event)">Manager</span>
                                 <div class="user-actions">
-                                    <button class="action-button" data-action="edit">Edit</button>
-                                    <button class="action-button" data-action="delete">Delete</button>
+                                    <button class="action-button" data-action="edit" data-tooltip="Modify user details and permissions" onclick="showTooltipModal(this, event)">Edit</button>
+                                    <button class="action-button" data-action="delete" data-tooltip="Remove user from the system" onclick="showTooltipModal(this, event)">Delete</button>
                                 </div>
                             </div>
                             <div class="user-item" data-user-id="3">
                                 <span class="user-name">Mike Johnson</span>
-                                <span class="user-role">Floor Staff</span>
+                                <span class="user-role" data-tooltip="Limited access to basic system functions" onclick="showTooltipModal(this, event)">Floor Staff</span>
                                 <div class="user-actions">
-                                    <button class="action-button" data-action="edit">Edit</button>
-                                    <button class="action-button" data-action="delete">Delete</button>
+                                    <button class="action-button" data-action="edit" data-tooltip="Modify user details and permissions" onclick="showTooltipModal(this, event)">Edit</button>
+                                    <button class="action-button" data-action="delete" data-tooltip="Remove user from the system" onclick="showTooltipModal(this, event)">Delete</button>
                                 </div>
                             </div>
                         </div>
-                        <button class="add-user-button primary">Add New User</button>
+                        <button class="add-user-button primary" data-tooltip="Create a new user account with custom permissions" onclick="showTooltipModal(this, event)">Add New User</button>
                     </div>
 
                     <!-- System Settings -->
-                    <div class="card third-width">
-                        <h2>System Settings</h2>
+                    <div class="card system-settings">
+                        <div class="card-header">
+                            <h2>System Settings</h2>
+                            <div class="tooltip-icon" data-tooltip="Configure system parameters, maintenance schedules, and operational thresholds" onclick="showTooltipModal(this, event)">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="settings-grid">
                             <div class="setting-item">
-                                <label for="dataRetention">Data Retention (days)</label>
+                                <label for="dataRetention" data-tooltip="How long to keep historical data before automatic deletion" onclick="showTooltipModal(this, event)">Data Retention (days)</label>
                                 <input type="number" id="dataRetention" value="90" min="1" max="365">
+                                <span class="setting-description">Longer retention requires more storage</span>
                             </div>
                             <div class="setting-item">
-                                <label for="backupFrequency">Backup Frequency (hours)</label>
+                                <label for="backupFrequency" data-tooltip="How often the system creates backup copies of data" onclick="showTooltipModal(this, event)">Backup Frequency (hours)</label>
                                 <input type="number" id="backupFrequency" value="24" min="1" max="168">
+                                <span class="setting-description">More frequent backups increase data safety</span>
                             </div>
                             <div class="setting-item">
-                                <label for="alertThreshold">Alert Threshold (%)</label>
+                                <label for="alertThreshold" data-tooltip="Percentage at which system alerts are triggered" onclick="showTooltipModal(this, event)">Alert Threshold (%)</label>
                                 <input type="number" id="alertThreshold" value="80" min="1" max="100">
+                                <span class="setting-description">Lower threshold means earlier warnings</span>
                             </div>
                             <div class="setting-item">
-                                <label for="maintenanceWindow">Maintenance Window</label>
+                                <label for="maintenanceWindow" data-tooltip="Preferred time for system maintenance tasks" onclick="showTooltipModal(this, event)">Maintenance Window</label>
                                 <select id="maintenanceWindow">
                                     <option value="weekday">Weekday</option>
                                     <option value="weekend">Weekend</option>
                                     <option value="night">Night</option>
                                 </select>
+                                <span class="setting-description">Choose when system updates occur</span>
                             </div>
                         </div>
-                        <button class="save-settings-button primary">Save Settings</button>
+                        <button class="save-settings-button primary" data-tooltip="Apply all current settings changes" onclick="showTooltipModal(this, event)">Save Settings</button>
                     </div>
 
                     <!-- User Activity -->
-                    <div class="card third-width">
-                        <h2>User Activity</h2>
+                    <div class="card user-activity">
+                        <div class="card-header">
+                            <h2>User Activity</h2>
+                            <div class="tooltip-icon" data-tooltip="Track user logins, actions, and system interactions over time" onclick="showTooltipModal(this, event)">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="chart-container">
                             <canvas id="userActivityChart"></canvas>
                         </div>
                     </div>
 
                     <!-- System Resource Usage -->
-                    <div class="card third-width">
-                        <h2>System Resource Usage</h2>
+                    <div class="card resource-usage">
+                        <div class="card-header">
+                            <h2>System Resource Usage</h2>
+                            <div class="tooltip-icon" data-tooltip="Monitor CPU, memory, storage, and network resource utilization" onclick="showTooltipModal(this, event)">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="chart-container">
                             <canvas id="dataUsageChart"></canvas>
                         </div>
                     </div>
 
                     <!-- Security Events -->
-                    <div class="card third-width">
-                        <h2>Security Events</h2>
+                    <div class="card security-events">
+                        <div class="card-header">
+                            <h2>Security Events</h2>
+                            <div class="tooltip-icon" data-tooltip="Track security-related events, login attempts, and potential threats" onclick="showTooltipModal(this, event)">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="chart-container">
                             <canvas id="securityEventsChart"></canvas>
                         </div>

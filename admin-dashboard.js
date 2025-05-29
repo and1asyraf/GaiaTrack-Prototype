@@ -438,7 +438,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Add click handlers to cards
     document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', () => {
+        card.addEventListener('click', (event) => {
+            // Ignore clicks on tooltip icons
+            if (event.target.closest('.tooltip-icon')) {
+                return;
+            }
+
             const title = card.querySelector('h2').textContent;
             let content = '';
 
@@ -716,4 +721,32 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
+    // Function to show tooltip modal
+    window.showTooltipModal = function(element, event) {
+        // Prevent the click from bubbling up to the card
+        if (event) {
+            event.stopPropagation();
+        }
+
+        const tooltip = element.getAttribute('data-tooltip');
+        if (!tooltip) return;
+
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+        const overlay = document.getElementById('overlay');
+
+        // Get the parent card title if available
+        const cardHeader = element.closest('.card-header');
+        const cardTitle = cardHeader ? cardHeader.querySelector('h2').textContent : 'Information';
+
+        modalTitle.textContent = cardTitle;
+        modalContent.innerHTML = `
+            <div class="tooltip-modal-content">
+                <p>${tooltip}</p>
+            </div>
+        `;
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    };
 });

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GaiaTrack - Manager Dashboard</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="manager-dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -77,78 +78,108 @@
             <main>
                 <section class="dashboard-grid">
                     <!-- Compliance Status -->
-                    <div class="card half-width">
-                        <h2>Compliance Status</h2>
+                    <div class="card compliance-status">
+                        <div class="card-header">
+                            <h2>Compliance Status</h2>
+                            <div class="tooltip-icon" data-tooltip="Track and monitor compliance metrics across all zones and operations" onclick="showTooltipModal(this, event)">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="chart-container">
                             <canvas id="complianceChart"></canvas>
                         </div>
                     </div>
 
                     <!-- Zone Performance -->
-                    <div class="card half-width">
-                        <h2>Zone Performance</h2>
+                    <div class="card zone-performance">
+                        <div class="card-header">
+                            <h2>Zone Performance</h2>
+                            <div class="tooltip-icon" data-tooltip="Monitor performance metrics for different operational zones" onclick="showTooltipModal(this, event)">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="chart-container">
                             <canvas id="zonePerformanceChart"></canvas>
                         </div>
                     </div>
 
                     <!-- Resource Utilization -->
-                    <div class="card half-width">
-                        <h2>Resource Utilization</h2>
+                    <div class="card resource-utilization">
+                        <div class="card-header">
+                            <h2>Resource Utilization</h2>
+                            <div class="tooltip-icon" data-tooltip="Track resource usage and efficiency across all operations" onclick="showTooltipModal(this, event)">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="chart-container">
                             <canvas id="resourceUtilizationChart"></canvas>
                         </div>
                     </div>
 
                     <!-- Cost Analysis -->
-                    <div class="card half-width">
-                        <h2>Cost Analysis</h2>
+                    <div class="card cost-analysis">
+                        <div class="card-header">
+                            <h2>Cost Analysis</h2>
+                            <div class="tooltip-icon" data-tooltip="Analyze operational costs and identify potential savings" onclick="showTooltipModal(this, event)">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="chart-container">
                             <canvas id="costAnalysisChart"></canvas>
                         </div>
                     </div>
 
                     <!-- Key Performance Indicators -->
-                    <div class="card full-width">
-                        <h2>Key Performance Indicators</h2>
+                    <div class="card kpi-overview">
+                        <div class="card-header">
+                            <h2>Key Performance Indicators</h2>
+                            <div class="tooltip-icon" data-tooltip="View critical metrics and performance indicators across all operations" onclick="showTooltipModal(this, event)">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="kpi-grid">
                             <div class="kpi-item">
-                                <span class="kpi-label">Compliance Rate</span>
+                                <span class="kpi-label" data-tooltip="Overall compliance rate across all operations" onclick="showTooltipModal(this, event)">Compliance Rate</span>
                                 <span class="kpi-value">92%</span>
                             </div>
                             <div class="kpi-item">
-                                <span class="kpi-label">Resource Efficiency</span>
+                                <span class="kpi-label" data-tooltip="Efficiency of resource allocation and usage" onclick="showTooltipModal(this, event)">Resource Efficiency</span>
                                 <span class="kpi-value">85%</span>
                             </div>
                             <div class="kpi-item">
-                                <span class="kpi-label">Cost Savings</span>
+                                <span class="kpi-label" data-tooltip="Total cost savings achieved through optimization" onclick="showTooltipModal(this, event)">Cost Savings</span>
                                 <span class="kpi-value">$12,500</span>
                             </div>
                             <div class="kpi-item">
-                                <span class="kpi-label">Staff Productivity</span>
+                                <span class="kpi-label" data-tooltip="Overall staff productivity and performance" onclick="showTooltipModal(this, event)">Staff Productivity</span>
                                 <span class="kpi-value">88%</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Recent Reports -->
-                    <div class="card full-width">
-                        <h2>Recent Reports</h2>
+                    <div class="card recent-reports">
+                        <div class="card-header">
+                            <h2>Recent Reports</h2>
+                            <div class="tooltip-icon" data-tooltip="Access and download recent operational and compliance reports" onclick="showTooltipModal(this, event)">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="reports-list">
                             <div class="report-item">
                                 <span class="report-date">2024-03-15</span>
-                                <span class="report-title">Monthly Compliance Report</span>
-                                <button class="download-button">Download</button>
+                                <span class="report-title" data-tooltip="Monthly compliance status and audit report" onclick="showTooltipModal(this, event)">Monthly Compliance Report</span>
+                                <button class="download-button" data-tooltip="Download the full report in PDF format" onclick="showTooltipModal(this, event)">Download</button>
                             </div>
                             <div class="report-item">
                                 <span class="report-date">2024-03-14</span>
-                                <span class="report-title">Resource Utilization Analysis</span>
-                                <button class="download-button">Download</button>
+                                <span class="report-title" data-tooltip="Detailed analysis of resource utilization and efficiency" onclick="showTooltipModal(this, event)">Resource Utilization Analysis</span>
+                                <button class="download-button" data-tooltip="Download the full report in PDF format" onclick="showTooltipModal(this, event)">Download</button>
                             </div>
                             <div class="report-item">
                                 <span class="report-date">2024-03-13</span>
-                                <span class="report-title">Cost Optimization Report</span>
-                                <button class="download-button">Download</button>
+                                <span class="report-title" data-tooltip="Analysis of cost optimization opportunities and savings" onclick="showTooltipModal(this, event)">Cost Optimization Report</span>
+                                <button class="download-button" data-tooltip="Download the full report in PDF format" onclick="showTooltipModal(this, event)">Download</button>
                             </div>
                         </div>
                     </div>

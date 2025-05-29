@@ -81,8 +81,11 @@ body {
 /* Dashboard Layout */
 .dashboard-container {
     display: flex;
-    min-height: 100vh;
+    height: 100vh;
     background-color: #f5f6fa;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
 }
 
 /* Sidebar Styles */
@@ -111,8 +114,8 @@ body {
 }
 
 .sidebar-toggle {
-    position: fixed;
-    left: 250px;
+    position: absolute;
+    right: -30px;
     top: 20px;
     background-color: #2c3e50;
     color: #ecf0f1;
@@ -120,7 +123,7 @@ body {
     padding: 10px;
     cursor: pointer;
     border-radius: 0 5px 5px 0;
-    transition: left 0.3s ease;
+    transition: all 0.3s ease;
     z-index: 1001;
     display: flex;
     align-items: center;
@@ -129,19 +132,15 @@ body {
     height: 30px;
 }
 
-.sidebar-toggle.collapsed {
-    left: 0;
-}
-
-.sidebar-toggle.expanded {
-    left: 250px;
+.sidebar.collapsed .sidebar-toggle {
+    right: -30px;
 }
 
 .sidebar-toggle i {
     transition: transform 0.3s ease;
 }
 
-.sidebar-toggle.collapsed i {
+.sidebar.collapsed .sidebar-toggle i {
     transform: rotate(180deg);
 }
 
@@ -238,14 +237,18 @@ body {
     padding: 0.5rem;
     transition: margin-left 0.3s ease;
     height: 100vh;
-    overflow-y: auto;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
 }
 
 .main-content.expanded {
     margin-left: 0;
 }
 
-/* Update existing header styles */
+/* Update header styles */
 header {
     background-color: #fff;
     padding: 0.75rem 1rem;
@@ -255,9 +258,9 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
 }
 
 header h1 {
@@ -284,117 +287,305 @@ header h1::before {
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    gap: 0.75rem;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 0.5rem;
     padding: 0.5rem;
-    min-height: calc(100vh - 60px);
+    height: calc(100vh - 80px);
+    overflow: hidden;
 }
 
 /* Card sizes */
 .card {
-    background-color: #fff;
-    border-radius: 10px;
-    padding: 1rem;
+    background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+    border-radius: 8px;
+    padding: 0.5rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
-    min-height: 250px;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    height: 100%;
+    overflow: hidden;
 }
 
 .card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    z-index: 2;
 }
 
 .card h2 {
     font-size: 1.1rem;
     margin-bottom: 0.75rem;
     color: #2c3e50;
+    flex-shrink: 0;
 }
 
-/* Full width card */
-.card.full-width {
-    grid-column: span 12;
-    min-height: 300px;
+/* Specific card layouts */
+.system-health {
+    grid-column: span 8;
+    grid-row: span 1;
 }
 
-/* Half width cards */
-.card.half-width {
-    grid-column: span 6;
-    min-height: 300px;
-}
-
-/* Third width cards */
-.card.third-width {
+.user-management {
     grid-column: span 4;
-    min-height: 250px;
+    grid-row: span 2;
+    overflow: visible;
 }
 
-/* Quarter width cards */
-.card.quarter-width {
-    grid-column: span 3;
-    min-height: 200px;
+.user-management h2 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #3498db;
+    margin-bottom: 1rem;
+}
+
+.users-list {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+    padding-right: 0.5rem;
+    min-height: 0;
+}
+
+.user-item {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: grid;
+    grid-template-columns: 2fr 1fr 2fr;
+    gap: 1rem;
+    align-items: center;
+}
+
+.user-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-name {
+    font-weight: 500;
+    color: #2c3e50;
+}
+
+.user-role {
+    position: relative;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    padding: 0.25rem 0.75rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    text-align: center;
+    cursor: help;
+}
+
+.user-actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+}
+
+.user-actions .action-button {
+    position: relative;
+    padding: 0.4rem 0.75rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.user-actions .action-button[data-action="edit"] {
+    background-color: #3498db;
+    color: white;
+}
+
+.user-actions .action-button[data-action="delete"] {
+    background-color: #e74c3c;
+    color: white;
+}
+
+.user-actions .action-button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+.add-user-button {
+    width: 100%;
+    padding: 0.75rem;
+    background: linear-gradient(to right, #2ecc71, #27ae60);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.add-user-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(46, 204, 113, 0.2);
+}
+
+.add-user-button::before {
+    content: '+';
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* System Settings Card */
+.system-settings {
+    grid-column: span 4;
+    grid-row: span 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1rem;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    padding-right: 0.5rem;
+}
+
+.setting-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Tooltip Styles */
+.tooltip-icon {
+    position: relative;
+    cursor: pointer;
+    color: #7f8c8d;
+    transition: color 0.2s ease;
+    padding-top: 0.25rem;
+    font-size: 1.1rem;
+}
+
+.tooltip-icon:hover {
+    color: #3498db;
+}
+
+[data-tooltip] {
+    position: relative;
+    cursor: pointer;
+}
+
+/* Remove hover-based tooltip styles */
+[data-tooltip]:before,
+[data-tooltip]:after {
+    display: none;
+}
+
+/* Tooltip Modal Styles */
+.tooltip-modal-content {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.tooltip-modal-content p {
+    color: #2c3e50;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Card header specific styles */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid #3498db;
+}
+
+/* Ensure tooltips are always on top */
+.overlay {
+    z-index: 900;
+}
+
+.modal {
+    z-index: 901;
+}
+
+/* Scrollbar styling for users list */
+.users-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.users-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.users-list::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.users-list::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Lists and Grids inside cards */
+.user-activity {
+    grid-column: span 4;
+    grid-row: span 1;
+}
+
+.resource-usage {
+    grid-column: span 4;
+    grid-row: span 1;
+}
+
+.security-events {
+    grid-column: span 4;
+    grid-row: span 1;
 }
 
 /* Chart container */
 .chart-container {
     flex: 1;
     position: relative;
-    min-height: 200px;
+    min-height: 0;
+    height: calc(100% - 35px);
+    margin-top: 0.25rem;
+    overflow: hidden;
 }
 
-/* Lists and Grids inside cards */
-.users-list,
-.tasks-list,
-.alerts-list,
-.reports-list,
-.kpi-grid,
-.settings-grid,
-.quick-actions,
-.actions-grid {
-    overflow-y: auto;
-    max-height: calc(100% - 40px);
-    padding-right: 5px;
+/* Specific card adjustments */
+.compliance-status,
+.zone-performance {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
-/* Scrollbar styling */
-.main-content::-webkit-scrollbar,
-.chart-container::-webkit-scrollbar,
-.users-list::-webkit-scrollbar,
-.tasks-list::-webkit-scrollbar,
-.alerts-list::-webkit-scrollbar,
-.reports-list::-webkit-scrollbar {
-    width: 8px;
-}
-
-.main-content::-webkit-scrollbar-track,
-.chart-container::-webkit-scrollbar-track,
-.users-list::-webkit-scrollbar-track,
-.tasks-list::-webkit-scrollbar-track,
-.alerts-list::-webkit-scrollbar-track,
-.reports-list::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
-
-.main-content::-webkit-scrollbar-thumb,
-.chart-container::-webkit-scrollbar-thumb,
-.users-list::-webkit-scrollbar-thumb,
-.tasks-list::-webkit-scrollbar-thumb,
-.alerts-list::-webkit-scrollbar-thumb,
-.reports-list::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
-
-.main-content::-webkit-scrollbar-thumb:hover,
-.chart-container::-webkit-scrollbar-thumb:hover,
-.users-list::-webkit-scrollbar-thumb:hover,
-.tasks-list::-webkit-scrollbar-thumb:hover,
-.alerts-list::-webkit-scrollbar-thumb:hover,
-.reports-list::-webkit-scrollbar-thumb:hover {
-    background: #555;
+.compliance-status .chart-container,
+.zone-performance .chart-container {
+    flex: 1;
+    min-height: 0;
+    position: relative;
 }
 
 /* Responsive adjustments */
@@ -403,134 +594,50 @@ header h1::before {
         grid-template-columns: repeat(8, 1fr);
     }
     
-    .card.quarter-width {
+    .system-health {
+        grid-column: span 6;
+    }
+    
+    .user-management {
+        grid-column: span 2;
+    }
+    
+    .system-settings,
+    .user-activity,
+    .resource-usage,
+    .security-events {
         grid-column: span 4;
     }
 }
 
 @media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-250px);
-    }
-
-    .sidebar.collapsed {
-        transform: translateX(-250px);
-    }
-
-    .sidebar.expanded {
-        transform: translateX(0);
-    }
-
-    .sidebar-toggle {
-        left: 0;
-        top: 10px;
-    }
-
-    .sidebar-toggle.collapsed {
-        left: 0;
-    }
-
-    .sidebar-toggle.expanded {
-        left: 250px;
+    .dashboard-container {
+        flex-direction: column;
     }
 
     .main-content {
-        margin-left: 0 !important;
-        width: 100%;
+        margin-left: 0;
+        height: calc(100vh - 60px);
     }
 
-    .main-content.expanded {
-        margin-left: 0 !important;
-    }
-
-    /* Header adjustments */
-    header {
-        padding: 0.5rem;
-        margin-bottom: 0.5rem;
-        width: 100%;
-    }
-
-    header h1 {
-        font-size: 1rem;
-        padding-left: 0.75rem;
-    }
-
-    header h1::before {
-        width: 3px;
-    }
-
-    .user-info {
-        font-size: 0.9rem;
-    }
-
-    /* Dashboard grid adjustments */
     .dashboard-grid {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
-        padding: 0.25rem;
-        width: 100%;
+        height: auto;
+        overflow-y: auto;
     }
 
-    /* Card adjustments */
     .card {
-        width: 100%;
-        padding: 0.75rem;
-        min-height: 200px;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.75rem;
+        min-height: 300px;
     }
 
-    .card h2 {
-        font-size: 1rem;
-        margin-bottom: 0.5rem;
-    }
-
-    /* Override all card width classes for mobile */
-    .card.full-width,
-    .card.half-width,
-    .card.third-width,
-    .card.quarter-width {
-        width: 100%;
-        min-height: 200px;
-    }
-
-    /* Chart container adjustments */
-    .chart-container {
-        min-height: 150px;
-        width: 100%;
-    }
-
-    /* List and grid adjustments */
-    .users-list,
-    .tasks-list,
-    .alerts-list,
-    .reports-list {
-        max-height: 150px;
-        width: 100%;
-    }
-
-    .user-item,
-    .task-item,
-    .alert-item,
-    .report-item {
-        padding: 0.5rem;
-        font-size: 0.9rem;
-        width: 100%;
-    }
-
-    /* KPI grid adjustments */
-    .kpi-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.5rem;
-        width: 100%;
-    }
-
-    /* Settings grid adjustments */
-    .settings-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 0.75rem;
+    .system-health,
+    .user-management,
+    .system-settings,
+    .user-activity,
+    .resource-usage,
+    .security-events {
         width: 100%;
     }
 }
@@ -603,7 +710,7 @@ header h1::before {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
+    z-index: 900;
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -625,6 +732,7 @@ header h1::before {
     position: relative;
     transform: scale(0.9);
     transition: transform 0.3s ease;
+    z-index: 901;
 }
 
 .overlay.active .modal {
@@ -752,9 +860,11 @@ header h1::before {
 }
 
 .setting-description {
+    display: block;
+    font-size: 0.8rem;
     color: #7f8c8d;
-    font-size: 0.85rem;
     margin-top: 0.25rem;
+    font-style: italic;
 }
 
 /* User management modal styles */
@@ -824,4 +934,231 @@ header h1::before {
 .add-user-button:hover,
 .save-settings-button:hover {
     background-color: #27ae60;
-} 
+}
+
+/* Card Header Styles */
+.card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.card-header h2 {
+    margin: 0;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #3498db;
+    flex: 1;
+}
+
+/* Setting Description Styles */
+.setting-description {
+    display: block;
+    font-size: 0.8rem;
+    color: #7f8c8d;
+    margin-top: 0.25rem;
+    font-style: italic;
+}
+
+/* Update existing card styles */
+.card {
+    background: linear-gradient(to bottom right, #ffffff, #f8f9fa);
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+}
+
+/* Update user role styles */
+.user-role {
+    position: relative;
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    padding: 0.25rem 0.75rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    text-align: center;
+    cursor: help;
+}
+
+/* Update action button styles */
+.action-button {
+    position: relative;
+    padding: 0.4rem 0.75rem;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Update setting item styles */
+.setting-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.setting-item label {
+    display: block;
+    color: #2c3e50;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    cursor: help;
+}
+
+/* Manager Dashboard Grid Layout */
+.compliance-status {
+    grid-column: span 6;
+    grid-row: span 1;
+}
+
+.zone-performance {
+    grid-column: span 6;
+    grid-row: span 1;
+}
+
+.resource-utilization {
+    grid-column: span 6;
+    grid-row: span 1;
+}
+
+.cost-analysis {
+    grid-column: span 6;
+    grid-row: span 1;
+}
+
+.kpi-overview {
+    grid-column: span 8;
+    grid-row: span 1;
+}
+
+.recent-reports {
+    grid-column: span 4;
+    grid-row: span 1;
+}
+
+/* KPI Grid Styles */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+.kpi-item {
+    background: white;
+    padding: 0.5rem;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.kpi-label {
+    color: #7f8c8d;
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+    cursor: pointer;
+}
+
+.kpi-value {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* Reports List Styles */
+.reports-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0.5rem;
+}
+
+.report-item {
+    background: white;
+    padding: 0.5rem;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.report-date {
+    color: #7f8c8d;
+    font-size: 0.8rem;
+}
+
+.report-title {
+    color: #2c3e50;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.download-button {
+    padding: 0.25rem 0.5rem;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: background-color 0.2s ease;
+}
+
+.download-button:hover {
+    background-color: #2980b9;
+}
+
+/* Responsive adjustments for manager dashboard */
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(8, 1fr);
+    }
+
+    .compliance-status,
+    .zone-performance,
+    .resource-utilization,
+    .cost-analysis {
+        grid-column: span 4;
+    }
+
+    .kpi-overview {
+        grid-column: span 8;
+    }
+
+    .recent-reports {
+        grid-column: span 8;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(6, 1fr);
+    }
+
+    .compliance-status,
+    .zone-performance,
+    .resource-utilization,
+    .cost-analysis,
+    .kpi-overview,
+    .recent-reports {
+        grid-column: span 4;
+        grid-row: span 1;
+    }
+}
+
+/* ... rest of existing code ... */ 

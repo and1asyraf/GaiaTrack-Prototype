@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GaiaTrack - Analyst Dashboard</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="analyst-dashboard.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
@@ -72,12 +73,35 @@
                 <section class="dashboard-grid">
                     <!-- Air Quality Analysis -->
                     <div class="card full-width">
-                        <h2>Air Quality Analysis</h2>
+                        <div class="card-header">
+                            <h2>Air Quality Analysis</h2>
+                            <div class="tooltip-icon" data-tooltip="Comprehensive analysis of air quality metrics and trends across different zones">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="analysis-grid">
                             <div class="analysis-section">
                                 <h3>AQI Trends</h3>
                                 <div class="chart-container">
                                     <canvas id="aqiTrendsChart"></canvas>
+                                </div>
+                                <div class="metric-summary">
+                                    <span class="metric">Current AQI: 65</span>
+                                    <span class="trend positive">↑ 5%</span>
+                                </div>
+                                <div class="metric-details">
+                                    <div class="metric-item">
+                                        <span class="metric-label">24h Average</span>
+                                        <span class="metric-value">62</span>
+                                    </div>
+                                    <div class="metric-item">
+                                        <span class="metric-label">7d Average</span>
+                                        <span class="metric-value">58</span>
+                                    </div>
+                                    <div class="metric-item">
+                                        <span class="metric-label">Status</span>
+                                        <span class="metric-value status-good">Good</span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="analysis-section">
@@ -85,70 +109,320 @@
                                 <div class="chart-container">
                                     <canvas id="pollutantAnalysisChart"></canvas>
                                 </div>
-                            </div>
-                            <div class="analysis-section">
-                                <h3>Environmental Conditions</h3>
-                                <div class="chart-container">
-                                    <canvas id="environmentalConditionsChart"></canvas>
+                                <div class="metric-summary">
+                                    <span class="metric">PM2.5: 12 μg/m³</span>
+                                    <span class="trend negative">↓ 2%</span>
                                 </div>
-                            </div>
-                            <div class="analysis-section">
-                                <h3>Time-based Analysis</h3>
-                                <div class="chart-container">
-                                    <canvas id="timeAnalysisChart"></canvas>
+                                <div class="metric-details">
+                                    <div class="metric-item">
+                                        <span class="metric-label">PM10</span>
+                                        <span class="metric-value">25 μg/m³</span>
+                                    </div>
+                                    <div class="metric-item">
+                                        <span class="metric-label">O₃</span>
+                                        <span class="metric-value">45 ppb</span>
+                                    </div>
+                                    <div class="metric-item">
+                                        <span class="metric-label">NO₂</span>
+                                        <span class="metric-value">18 ppb</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Primary Monitoring Section -->
-                    <div class="card full-width">
-                        <h2>Sensor Response Trends</h2>
+                    <!-- Sensor Response Trends -->
+                    <div class="card quarter-width">
+                        <div class="card-header">
+                            <h2>Sensor Response Trends</h2>
+                            <div class="tooltip-icon" data-tooltip="Real-time monitoring of sensor responses and environmental changes">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="chart-container">
                             <canvas id="sensorTrendsChart"></canvas>
+                        </div>
+                        <div class="sensor-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">Accuracy</span>
+                                <span class="metric-value">98.5%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Response Time</span>
+                                <span class="metric-value">2.3s</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Calibration</span>
+                                <span class="metric-value status-optimal">Optimal</span>
+                            </div>
+                        </div>
+                        <div class="card-summary">
+                            <h4>Performance Summary</h4>
+                            <div class="summary-grid">
+                                <div class="summary-item">
+                                    <span class="summary-label">Uptime</span>
+                                    <span class="summary-value">99.9%</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Data Quality</span>
+                                    <span class="summary-value">98.2%</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Environmental Context -->
-                    <div class="card half-width">
-                        <h2>Environmental Context</h2>
+                    <div class="card quarter-width">
+                        <div class="card-header">
+                            <h2>Environmental Context</h2>
+                            <div class="tooltip-icon" data-tooltip="Analysis of environmental factors affecting air quality measurements">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="chart-container">
                             <canvas id="envContextChart"></canvas>
                         </div>
                     </div>
 
                     <!-- AI Predictions -->
-                    <div class="card half-width">
-                        <h2>AI Predictions vs Actual</h2>
+                    <div class="card quarter-width">
+                        <div class="card-header">
+                            <h2>AI Predictions</h2>
+                            <div class="tooltip-icon" data-tooltip="Comparison of AI model predictions with actual environmental measurements">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="chart-container">
                             <canvas id="aiPredictionsChart"></canvas>
+                        </div>
+                        <div class="prediction-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">Accuracy</span>
+                                <span class="metric-value">94.2%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Confidence</span>
+                                <span class="metric-value">85%</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Error Rate</span>
+                                <span class="metric-value">5.8%</span>
+                            </div>
+                        </div>
+                        <div class="card-summary">
+                            <h4>Model Performance</h4>
+                            <div class="summary-grid">
+                                <div class="summary-item">
+                                    <span class="summary-label">Training Data</span>
+                                    <span class="summary-value">1.2M points</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Last Update</span>
+                                    <span class="summary-value">2h ago</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Quick Actions -->
-                    <div class="card third-width">
-                        <h2>Quick Actions</h2>
+                    <div class="card quarter-width">
+                        <div class="card-header">
+                            <h2>Quick Actions</h2>
+                            <div class="tooltip-icon" data-tooltip="Common actions for data analysis and reporting">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="quick-actions">
-                            <button class="action-button primary">Generate Report</button>
-                            <button class="action-button">Export Data</button>
-                            <button class="action-button">Set Alerts</button>
-                            <button class="action-button">Contact Manager</button>
+                            <button class="action-button">
+                                <i class="fas fa-download"></i>
+                                Export Data
+                            </button>
+                            <button class="action-button">
+                                <i class="fas fa-user-tie"></i>
+                                Contact Manager
+                            </button>
+                        </div>
+                        <div class="card-summary">
+                            <h4>Recent Actions</h4>
+                            <div class="action-list">
+                                <div class="action-item">
+                                    <span class="action-time">10:15 AM</span>
+                                    <span class="action-desc">Data exported</span>
+                                </div>
+                                <div class="action-item">
+                                    <span class="action-time">09:45 AM</span>
+                                    <span class="action-desc">Manager contacted</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generate Report -->
+                    <div class="card quarter-width">
+                        <div class="card-header">
+                            <h2>Generate Report</h2>
+                            <div class="tooltip-icon" data-tooltip="Create and customize environmental analysis reports">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
+                        <div class="report-actions">
+                            <button class="action-button primary">
+                                <i class="fas fa-file-alt"></i>
+                                New Report
+                            </button>
+                            <button class="action-button">
+                                <i class="fas fa-clock"></i>
+                                Scheduled Reports
+                            </button>
+                            <button class="action-button">
+                                <i class="fas fa-history"></i>
+                                Report History
+                            </button>
+                        </div>
+                        <div class="card-summary">
+                            <h4>Recent Reports</h4>
+                            <div class="report-list">
+                                <div class="report-item">
+                                    <span class="report-time">Today, 10:15 AM</span>
+                                    <span class="report-desc">Air Quality Analysis - Zone A</span>
+                                </div>
+                                <div class="report-item">
+                                    <span class="report-time">Yesterday, 3:30 PM</span>
+                                    <span class="report-desc">Environmental Impact Report</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Alerts Management -->
+                    <div class="card quarter-width">
+                        <div class="card-header">
+                            <h2>Alerts Management</h2>
+                            <div class="tooltip-icon" data-tooltip="Configure and manage environmental monitoring alerts">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
+                        <div class="alerts-management">
+                            <div class="alert-config">
+                                <h3>Alert Thresholds</h3>
+                                <div class="threshold-item">
+                                    <span class="threshold-label">CO Level</span>
+                                    <input type="number" value="50" class="threshold-input" placeholder="ppm">
+                                </div>
+                                <div class="threshold-item">
+                                    <span class="threshold-label">PM2.5</span>
+                                    <input type="number" value="12" class="threshold-input" placeholder="μg/m³">
+                                </div>
+                                <div class="threshold-item">
+                                    <span class="threshold-label">NO₂</span>
+                                    <input type="number" value="40" class="threshold-input" placeholder="ppb">
+                                </div>
+                            </div>
+                            <div class="alert-actions">
+                                <button class="action-button primary">
+                                    <i class="fas fa-save"></i>
+                                    Save Thresholds
+                                </button>
+                                <button class="action-button">
+                                    <i class="fas fa-bell"></i>
+                                    Test Alert
+                                </button>
+                            </div>
+                            <div class="alert-notifications">
+                                <h3>Notification Settings</h3>
+                                <div class="notification-item">
+                                    <input type="checkbox" id="email-notify" checked>
+                                    <label for="email-notify">Email Notifications</label>
+                                </div>
+                                <div class="notification-item">
+                                    <input type="checkbox" id="sms-notify">
+                                    <label for="sms-notify">SMS Notifications</label>
+                                </div>
+                                <div class="notification-item">
+                                    <input type="checkbox" id="dashboard-notify" checked>
+                                    <label for="dashboard-notify">Dashboard Alerts</label>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Pollution Heatmap -->
-                    <div class="card third-width">
-                        <h2>Pollution Heatmap</h2>
+                    <div class="card quarter-width">
+                        <div class="card-header">
+                            <h2>Pollution Heatmap</h2>
+                            <div class="tooltip-icon" data-tooltip="Geographic visualization of pollution levels across different zones">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="chart-container">
                             <canvas id="pollutionHeatmap"></canvas>
+                        </div>
+                        <div class="heatmap-metrics">
+                            <div class="metric-item">
+                                <span class="metric-label">High Risk Zones</span>
+                                <span class="metric-value">3</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Medium Risk</span>
+                                <span class="metric-value">5</span>
+                            </div>
+                            <div class="metric-item">
+                                <span class="metric-label">Low Risk</span>
+                                <span class="metric-value">12</span>
+                            </div>
+                        </div>
+                        <div class="card-summary">
+                            <h4>Zone Status</h4>
+                            <div class="summary-grid">
+                                <div class="summary-item">
+                                    <span class="summary-label">Total Zones</span>
+                                    <span class="summary-value">20</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Active Sensors</span>
+                                    <span class="summary-value">18</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Recent Alerts -->
-                    <div class="card third-width">
-                        <h2>Recent Alerts</h2>
+                    <div class="card quarter-width">
+                        <div class="card-header">
+                            <h2>Recent Alerts</h2>
+                            <div class="tooltip-icon" data-tooltip="Latest environmental alerts and notifications">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                        </div>
                         <div class="alerts-list">
-                            <!-- Alerts will be dynamically added here -->
+                            <div class="alert-item high">
+                                <span class="alert-time">10:15 AM</span>
+                                <span class="alert-message">CO levels exceeded threshold in Zone A</span>
+                                <span class="alert-priority">High</span>
+                            </div>
+                            <div class="alert-item medium">
+                                <span class="alert-time">09:45 AM</span>
+                                <span class="alert-message">Sensor calibration needed in Zone B</span>
+                                <span class="alert-priority">Medium</span>
+                            </div>
+                            <div class="alert-item low">
+                                <span class="alert-time">09:30 AM</span>
+                                <span class="alert-message">Routine maintenance scheduled</span>
+                                <span class="alert-priority">Low</span>
+                            </div>
+                        </div>
+                        <div class="card-summary">
+                            <h4>Alert Summary</h4>
+                            <div class="summary-grid">
+                                <div class="summary-item">
+                                    <span class="summary-label">Total Alerts</span>
+                                    <span class="summary-value">15</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">Unresolved</span>
+                                    <span class="summary-value">3</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>

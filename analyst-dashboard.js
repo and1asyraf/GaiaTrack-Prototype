@@ -11,386 +11,22 @@ document.addEventListener('DOMContentLoaded', function() {
     // Display username
     document.getElementById('username').textContent = username;
 
-    // Sidebar Toggle Functionality
+    // Initialize charts
+    initializeCharts();
+
+    // Sidebar toggle functionality
+    const sidebarToggle = document.getElementById('sidebarToggle');
     const sidebar = document.querySelector('.sidebar');
     const mainContent = document.querySelector('.main-content');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const toggleIcon = sidebarToggle.querySelector('i');
 
-    // Function to check if device is mobile
-    const isMobile = () => window.innerWidth <= 768;
-
-    // Function to set mobile state
-    const setMobileState = () => {
-        sidebar.classList.add('collapsed');
-        sidebar.classList.remove('expanded');
-        mainContent.classList.add('expanded');
-        sidebarToggle.classList.add('collapsed');
-        sidebarToggle.classList.remove('expanded');
-    };
-
-    // Function to set desktop state
-    const setDesktopState = (isCollapsed) => {
-        if (isCollapsed) {
-            sidebar.classList.add('collapsed');
-            sidebar.classList.remove('expanded');
-            mainContent.classList.add('expanded');
-            sidebarToggle.classList.add('collapsed');
-            sidebarToggle.classList.remove('expanded');
-        } else {
-            sidebar.classList.remove('collapsed');
-            sidebar.classList.add('expanded');
-            mainContent.classList.remove('expanded');
-            sidebarToggle.classList.remove('collapsed');
-            sidebarToggle.classList.add('expanded');
-        }
-    };
-
-    // Initialize sidebar state
-    const isSidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-    if (isMobile()) {
-        setMobileState();
-    } else {
-        setDesktopState(isSidebarCollapsed);
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+            this.classList.toggle('collapsed');
+            this.classList.toggle('expanded');
+        });
     }
-
-    // Toggle sidebar
-    sidebarToggle.addEventListener('click', () => {
-        if (isMobile()) {
-            // For mobile, we want to show the sidebar when it's collapsed
-            if (sidebar.classList.contains('collapsed')) {
-                sidebar.classList.remove('collapsed');
-                sidebar.classList.add('expanded');
-                mainContent.classList.remove('expanded');
-                sidebarToggle.classList.remove('collapsed');
-                sidebarToggle.classList.add('expanded');
-            } else {
-                sidebar.classList.add('collapsed');
-                sidebar.classList.remove('expanded');
-                mainContent.classList.add('expanded');
-                sidebarToggle.classList.add('collapsed');
-                sidebarToggle.classList.remove('expanded');
-            }
-        } else {
-            // For desktop, toggle the state and save it
-            const willBeCollapsed = !sidebar.classList.contains('collapsed');
-            if (willBeCollapsed) {
-                sidebar.classList.add('collapsed');
-                sidebar.classList.remove('expanded');
-                mainContent.classList.add('expanded');
-                sidebarToggle.classList.add('collapsed');
-                sidebarToggle.classList.remove('expanded');
-            } else {
-                sidebar.classList.remove('collapsed');
-                sidebar.classList.add('expanded');
-                mainContent.classList.remove('expanded');
-                sidebarToggle.classList.remove('collapsed');
-                sidebarToggle.classList.add('expanded');
-            }
-            localStorage.setItem('sidebarCollapsed', willBeCollapsed);
-        }
-    });
-
-    // Handle window resize
-    window.addEventListener('resize', () => {
-        if (isMobile()) {
-            setMobileState();
-        } else {
-            setDesktopState(isSidebarCollapsed);
-        }
-    });
-
-    // AI-like data generation functions
-    function generateTrendingData(baseValue, trend, noise) {
-        return baseValue + trend + (Math.random() * noise - noise/2);
-    }
-
-    function detectAnomaly(value, threshold) {
-        return Math.random() < 0.05 ? value * (1 + Math.random() * threshold) : value;
-    }
-
-    function predictNextValue(historicalData, lookback = 3) {
-        if (historicalData.length < lookback) return historicalData[historicalData.length - 1];
-        const recent = historicalData.slice(-lookback);
-        const trend = recent[recent.length - 1] - recent[0];
-        return recent[recent.length - 1] + trend + (Math.random() * 0.2 - 0.1);
-    }
-
-    // Initialize data arrays
-    const timeLabels = ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'];
-    let sensorData = {
-        CO: Array(6).fill(0).map(() => Math.random() * 5),
-        NOx: Array(6).fill(0).map(() => Math.random() * 20 + 10),
-        NO2: Array(6).fill(0).map(() => Math.random() * 15 + 5)
-    };
-    let envData = {
-        temperature: Array(6).fill(0).map(() => Math.random() * 15 + 15),
-        humidity: Array(6).fill(0).map(() => Math.random() * 40 + 30),
-        pressure: Array(6).fill(0).map(() => Math.random() * 40 + 980)
-    };
-    let predictions = {
-        CO: [...sensorData.CO]
-    };
-
-    // Initialize charts
-    const sensorTrendsChart = new Chart(document.getElementById('sensorTrendsChart'), {
-        type: 'line',
-        data: {
-            labels: timeLabels,
-            datasets: [
-                {
-                    label: 'CO',
-                    data: sensorData.CO,
-                    borderColor: '#e74c3c',
-                    tension: 0.4
-                },
-                {
-                    label: 'NOx',
-                    data: sensorData.NOx,
-                    borderColor: '#3498db',
-                    tension: 0.4
-                },
-                {
-                    label: 'NO2',
-                    data: sensorData.NO2,
-                    borderColor: '#2ecc71',
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Sensor Response Trends'
-                }
-            }
-        }
-    });
-
-    const envContextChart = new Chart(document.getElementById('envContextChart'), {
-        type: 'line',
-        data: {
-            labels: timeLabels,
-            datasets: [
-                {
-                    label: 'Temperature (°C)',
-                    data: envData.temperature,
-                    borderColor: '#e74c3c',
-                    tension: 0.4
-                },
-                {
-                    label: 'Humidity (%)',
-                    data: envData.humidity,
-                    borderColor: '#3498db',
-                    tension: 0.4
-                },
-                {
-                    label: 'Pressure (hPa)',
-                    data: envData.pressure,
-                    borderColor: '#2ecc71',
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Environmental Context'
-                }
-            }
-        }
-    });
-
-    // Initialize pollution heatmap
-    const pollutionHeatmap = new Chart(document.getElementById('pollutionHeatmap'), {
-        type: 'bar',
-        data: {
-            labels: ['Zone A', 'Zone B', 'Zone C', 'Zone D'],
-            datasets: [{
-                label: 'Pollution Level',
-                data: [65, 59, 80, 81],
-                backgroundColor: [
-                    '#2ecc71',
-                    '#f1c40f',
-                    '#e74c3c',
-                    '#3498db'
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Pollution Heatmap'
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    max: 100
-                }
-            }
-        }
-    });
-
-    const aiPredictionsChart = new Chart(document.getElementById('aiPredictionsChart'), {
-        type: 'line',
-        data: {
-            labels: ['Now', '+1h', '+2h', '+3h', '+4h', '+5h', '+6h'],
-            datasets: [
-                {
-                    label: 'Actual CO',
-                    data: predictions.CO,
-                    borderColor: '#e74c3c',
-                    tension: 0.4
-                },
-                {
-                    label: 'Predicted CO',
-                    data: predictions.CO.map((_, i) => predictNextValue(predictions.CO.slice(0, i + 1))),
-                    borderColor: '#e74c3c',
-                    borderDash: [5, 5],
-                    tension: 0.4
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'AI Predictions vs Actual'
-                }
-            }
-        }
-    });
-
-    // Initialize Air Quality Analysis Charts
-    const aqiTrendsChart = new Chart(document.getElementById('aqiTrendsChart'), {
-        type: 'line',
-        data: {
-            labels: ['6h ago', '5h ago', '4h ago', '3h ago', '2h ago', '1h ago', 'Now'],
-            datasets: [{
-                label: 'AQI',
-                data: [65, 70, 68, 72, 75, 73, 75],
-                borderColor: '#3498db',
-                tension: 0.4,
-                fill: false
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'AQI Trends'
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: false
-                }
-            }
-        }
-    });
-
-    const pollutantAnalysisChart = new Chart(document.getElementById('pollutantAnalysisChart'), {
-        type: 'bar',
-        data: {
-            labels: ['CO', 'NO2', 'Benzene'],
-            datasets: [{
-                label: 'Current Levels',
-                data: [2.5, 15, 0.8],
-                backgroundColor: [
-                    '#e74c3c',
-                    '#3498db',
-                    '#2ecc71'
-                ]
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Pollutant Levels'
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
-    });
-
-    const environmentalConditionsChart = new Chart(document.getElementById('environmentalConditionsChart'), {
-        type: 'line',
-        data: {
-            labels: ['6h ago', '5h ago', '4h ago', '3h ago', '2h ago', '1h ago', 'Now'],
-            datasets: [{
-                label: 'Temperature (°C)',
-                data: [21, 21.5, 22, 22.5, 22, 21.8, 22],
-                borderColor: '#e67e22',
-                tension: 0.4,
-                fill: false
-            }, {
-                label: 'Humidity (%)',
-                data: [45, 44, 46, 45, 44, 45, 45],
-                borderColor: '#3498db',
-                tension: 0.4,
-                fill: false
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Environmental Conditions'
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: false
-                }
-            }
-        }
-    });
-
-    const timeAnalysisChart = new Chart(document.getElementById('timeAnalysisChart'), {
-        type: 'bar',
-        data: {
-            labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
-            datasets: [{
-                label: 'Average AQI',
-                data: [65, 68, 72, 75, 73, 70],
-                backgroundColor: '#3498db'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Time-based Analysis'
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: false
-                }
-            }
-        }
-    });
 
     // Overlay/Modal functionality
     const overlay = document.getElementById('overlay');
@@ -427,9 +63,30 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Add click handlers to cards
+    // Add click handlers for tooltips
+    document.querySelectorAll('[data-tooltip]').forEach(element => {
+        element.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const tooltip = this.getAttribute('data-tooltip');
+            if (!tooltip) return;
+
+            showModal(
+                this.closest('.card')?.querySelector('h2')?.textContent || 'Information',
+                `<div class="tooltip-content"><p>${tooltip}</p></div>`
+            );
+        });
+    });
+
+    // Add click handlers for cards
     document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', () => {
+        card.addEventListener('click', function(e) {
+            // Don't trigger if clicking on a tooltip or button
+            if (e.target.closest('.tooltip-icon') || e.target.closest('.action-button')) {
+                return;
+            }
+
             const title = card.querySelector('h2').textContent;
             let content = '';
 
@@ -535,12 +192,104 @@ document.addEventListener('DOMContentLoaded', function() {
                 case 'Quick Actions':
                     content = `
                         <div class="actions-grid">
-                            <button class="action-button primary">Generate Report</button>
                             <button class="action-button">Export Data</button>
-                            <button class="action-button">Set Alerts</button>
                             <button class="action-button">Contact Manager</button>
-                            <button class="action-button">Schedule Analysis</button>
-                            <button class="action-button">View History</button>
+                        </div>
+                    `;
+                    break;
+
+                case 'Generate Report':
+                    content = `
+                        <div class="report-management-modal">
+                            <div class="report-config-section">
+                                <h3>Report Configuration</h3>
+                                <div class="report-form">
+                                    <div class="form-group">
+                                        <label>Report Type</label>
+                                        <select class="report-select">
+                                            <option value="air-quality">Air Quality Analysis</option>
+                                            <option value="environmental">Environmental Impact</option>
+                                            <option value="trends">Trend Analysis</option>
+                                            <option value="compliance">Compliance Report</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Time Range</label>
+                                        <div class="date-range">
+                                            <input type="date" class="date-input">
+                                            <span>to</span>
+                                            <input type="date" class="date-input">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Zones</label>
+                                        <div class="zone-selector">
+                                            <label class="zone-checkbox">
+                                                <input type="checkbox" checked> Zone A
+                                            </label>
+                                            <label class="zone-checkbox">
+                                                <input type="checkbox" checked> Zone B
+                                            </label>
+                                            <label class="zone-checkbox">
+                                                <input type="checkbox" checked> Zone C
+                                            </label>
+                                            <label class="zone-checkbox">
+                                                <input type="checkbox"> Zone D
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Include Sections</label>
+                                        <div class="section-selector">
+                                            <label class="section-checkbox">
+                                                <input type="checkbox" checked> Summary
+                                            </label>
+                                            <label class="section-checkbox">
+                                                <input type="checkbox" checked> Charts
+                                            </label>
+                                            <label class="section-checkbox">
+                                                <input type="checkbox" checked> Data Tables
+                                            </label>
+                                            <label class="section-checkbox">
+                                                <input type="checkbox" checked> Recommendations
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="report-preview-section">
+                                <h3>Report Preview</h3>
+                                <div class="preview-container">
+                                    <div class="preview-header">
+                                        <h4>Air Quality Analysis Report</h4>
+                                        <span class="preview-date">Generated: Today, 10:15 AM</span>
+                                    </div>
+                                    <div class="preview-content">
+                                        <div class="preview-chart">
+                                            <canvas id="reportPreviewChart"></canvas>
+                                        </div>
+                                        <div class="preview-summary">
+                                            <p>This report provides a comprehensive analysis of air quality metrics across selected zones...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="report-actions-section">
+                                <button class="action-button primary">
+                                    <i class="fas fa-file-alt"></i>
+                                    Generate Report
+                                </button>
+                                <button class="action-button">
+                                    <i class="fas fa-clock"></i>
+                                    Schedule Report
+                                </button>
+                                <button class="action-button">
+                                    <i class="fas fa-download"></i>
+                                    Export Template
+                                </button>
+                            </div>
                         </div>
                     `;
                     break;
@@ -597,371 +346,151 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     `;
                     break;
+
+                case 'Alerts Management':
+                    content = `
+                        <div class="alerts-management-modal">
+                            <div class="alert-config-section">
+                                <h3>Alert Thresholds</h3>
+                                <div class="threshold-grid">
+                                    <div class="threshold-group">
+                                        <h4>Air Quality</h4>
+                                        <div class="threshold-item">
+                                            <span class="threshold-label">CO Level</span>
+                                            <input type="number" value="50" class="threshold-input" placeholder="ppm">
+                                        </div>
+                                        <div class="threshold-item">
+                                            <span class="threshold-label">PM2.5</span>
+                                            <input type="number" value="12" class="threshold-input" placeholder="μg/m³">
+                                        </div>
+                                        <div class="threshold-item">
+                                            <span class="threshold-label">NO₂</span>
+                                            <input type="number" value="40" class="threshold-input" placeholder="ppb">
+                                        </div>
+                                    </div>
+                                    <div class="threshold-group">
+                                        <h4>Environmental</h4>
+                                        <div class="threshold-item">
+                                            <span class="threshold-label">Temperature</span>
+                                            <input type="number" value="30" class="threshold-input" placeholder="°C">
+                                        </div>
+                                        <div class="threshold-item">
+                                            <span class="threshold-label">Humidity</span>
+                                            <input type="number" value="80" class="threshold-input" placeholder="%">
+                                        </div>
+                                        <div class="threshold-item">
+                                            <span class="threshold-label">Pressure</span>
+                                            <input type="number" value="1013" class="threshold-input" placeholder="hPa">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="alert-notification-section">
+                                <h3>Notification Settings</h3>
+                                <div class="notification-grid">
+                                    <div class="notification-group">
+                                        <h4>Channels</h4>
+                                        <div class="notification-item">
+                                            <input type="checkbox" id="modal-email-notify" checked>
+                                            <label for="modal-email-notify">Email Notifications</label>
+                                        </div>
+                                        <div class="notification-item">
+                                            <input type="checkbox" id="modal-sms-notify">
+                                            <label for="modal-sms-notify">SMS Notifications</label>
+                                        </div>
+                                        <div class="notification-item">
+                                            <input type="checkbox" id="modal-dashboard-notify" checked>
+                                            <label for="modal-dashboard-notify">Dashboard Alerts</label>
+                                        </div>
+                                    </div>
+                                    <div class="notification-group">
+                                        <h4>Alert Levels</h4>
+                                        <div class="notification-item">
+                                            <input type="checkbox" id="modal-high-alerts" checked>
+                                            <label for="modal-high-alerts">High Priority</label>
+                                        </div>
+                                        <div class="notification-item">
+                                            <input type="checkbox" id="modal-medium-alerts" checked>
+                                            <label for="modal-medium-alerts">Medium Priority</label>
+                                        </div>
+                                        <div class="notification-item">
+                                            <input type="checkbox" id="modal-low-alerts">
+                                            <label for="modal-low-alerts">Low Priority</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="alert-schedule-section">
+                                <h3>Alert Schedule</h3>
+                                <div class="schedule-grid">
+                                    <div class="schedule-item">
+                                        <span class="schedule-label">Active Hours</span>
+                                        <div class="time-range">
+                                            <input type="time" value="08:00" class="time-input">
+                                            <span>to</span>
+                                            <input type="time" value="18:00" class="time-input">
+                                        </div>
+                                    </div>
+                                    <div class="schedule-item">
+                                        <span class="schedule-label">Days Active</span>
+                                        <div class="day-selector">
+                                            <label class="day-checkbox">
+                                                <input type="checkbox" checked> Mon
+                                            </label>
+                                            <label class="day-checkbox">
+                                                <input type="checkbox" checked> Tue
+                                            </label>
+                                            <label class="day-checkbox">
+                                                <input type="checkbox" checked> Wed
+                                            </label>
+                                            <label class="day-checkbox">
+                                                <input type="checkbox" checked> Thu
+                                            </label>
+                                            <label class="day-checkbox">
+                                                <input type="checkbox" checked> Fri
+                                            </label>
+                                            <label class="day-checkbox">
+                                                <input type="checkbox"> Sat
+                                            </label>
+                                            <label class="day-checkbox">
+                                                <input type="checkbox"> Sun
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="alert-actions-section">
+                                <button class="action-button primary">
+                                    <i class="fas fa-save"></i>
+                                    Save Configuration
+                                </button>
+                                <button class="action-button">
+                                    <i class="fas fa-bell"></i>
+                                    Test Alert
+                                </button>
+                                <button class="action-button">
+                                    <i class="fas fa-history"></i>
+                                    View Alert History
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    break;
             }
 
             showModal(title, content);
 
-            // Initialize charts in the modal
+            // Initialize charts in modal if needed
             if (content.includes('chart-container')) {
-                // Wait for the modal to be fully rendered
                 setTimeout(() => {
-                    switch (title) {
-                        case 'Air Quality Analysis':
-                            // Initialize all four charts for Air Quality Analysis
-                            new Chart(document.getElementById('modalAqiTrendsChart'), {
-                                type: 'line',
-                                data: {
-                                    labels: aqiTrendsChart.data.labels,
-                                    datasets: [{
-                                        label: 'AQI',
-                                        data: [...aqiTrendsChart.data.datasets[0].data],
-                                        borderColor: '#3498db',
-                                        tension: 0.4,
-                                        fill: false
-                                    }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    plugins: {
-                                        title: {
-                                            display: true,
-                                            text: 'AQI Trends'
-                                        }
-                                    }
-                                }
-                            });
-
-                            new Chart(document.getElementById('modalPollutantAnalysisChart'), {
-                                type: 'bar',
-                                data: {
-                                    labels: pollutantAnalysisChart.data.labels,
-                                    datasets: [{
-                                        label: 'Current Levels',
-                                        data: [...pollutantAnalysisChart.data.datasets[0].data],
-                                        backgroundColor: [
-                                            '#e74c3c',
-                                            '#3498db',
-                                            '#2ecc71'
-                                        ]
-                                    }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    plugins: {
-                                        title: {
-                                            display: true,
-                                            text: 'Pollutant Levels'
-                                        }
-                                    }
-                                }
-                            });
-
-                            new Chart(document.getElementById('modalEnvironmentalConditionsChart'), {
-                                type: 'line',
-                                data: {
-                                    labels: environmentalConditionsChart.data.labels,
-                                    datasets: [
-                                        {
-                                            label: 'Temperature (°C)',
-                                            data: [...environmentalConditionsChart.data.datasets[0].data],
-                                            borderColor: '#e67e22',
-                                            tension: 0.4,
-                                            fill: false
-                                        },
-                                        {
-                                            label: 'Humidity (%)',
-                                            data: [...environmentalConditionsChart.data.datasets[1].data],
-                                            borderColor: '#3498db',
-                                            tension: 0.4,
-                                            fill: false
-                                        }
-                                    ]
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    plugins: {
-                                        title: {
-                                            display: true,
-                                            text: 'Environmental Conditions'
-                                        }
-                                    }
-                                }
-                            });
-
-                            new Chart(document.getElementById('modalTimeAnalysisChart'), {
-                                type: 'bar',
-                                data: {
-                                    labels: timeAnalysisChart.data.labels,
-                                    datasets: [{
-                                        label: 'Average AQI',
-                                        data: [...timeAnalysisChart.data.datasets[0].data],
-                                        backgroundColor: '#3498db'
-                                    }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    plugins: {
-                                        title: {
-                                            display: true,
-                                            text: 'Time-based Analysis'
-                                        }
-                                    }
-                                }
-                            });
-                            break;
-
-                        case 'Sensor Response Trends':
-                            new Chart(document.getElementById('modalSensorTrendsChart'), {
-                                type: 'line',
-                                data: {
-                                    labels: sensorTrendsChart.data.labels,
-                                    datasets: sensorTrendsChart.data.datasets.map(dataset => ({
-                                        label: dataset.label,
-                                        data: [...dataset.data],
-                                        borderColor: dataset.borderColor,
-                                        tension: 0.4
-                                    }))
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    plugins: {
-                                        title: {
-                                            display: true,
-                                            text: 'Sensor Response Trends'
-                                        }
-                                    }
-                                }
-                            });
-                            break;
-
-                        case 'Environmental Context':
-                            new Chart(document.getElementById('modalEnvContextChart'), {
-                                type: 'line',
-                                data: {
-                                    labels: envContextChart.data.labels,
-                                    datasets: envContextChart.data.datasets.map(dataset => ({
-                                        label: dataset.label,
-                                        data: [...dataset.data],
-                                        borderColor: dataset.borderColor,
-                                        tension: 0.4
-                                    }))
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    plugins: {
-                                        title: {
-                                            display: true,
-                                            text: 'Environmental Context'
-                                        }
-                                    }
-                                }
-                            });
-                            break;
-
-                        case 'AI Predictions':
-                            new Chart(document.getElementById('modalAiPredictionsChart'), {
-                                type: 'line',
-                                data: {
-                                    labels: aiPredictionsChart.data.labels,
-                                    datasets: [
-                                        {
-                                            label: 'Actual CO',
-                                            data: [...aiPredictionsChart.data.datasets[0].data],
-                                            borderColor: '#e74c3c',
-                                            tension: 0.4
-                                        },
-                                        {
-                                            label: 'Predicted CO',
-                                            data: [...aiPredictionsChart.data.datasets[1].data],
-                                            borderColor: '#e74c3c',
-                                            borderDash: [5, 5],
-                                            tension: 0.4
-                                        }
-                                    ]
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    plugins: {
-                                        title: {
-                                            display: true,
-                                            text: 'AI Predictions vs Actual'
-                                        }
-                                    }
-                                }
-                            });
-                            break;
-
-                        case 'Pollution Heatmap':
-                            new Chart(document.getElementById('modalPollutionHeatmap'), {
-                                type: 'bar',
-                                data: {
-                                    labels: pollutionHeatmap.data.labels,
-                                    datasets: [{
-                                        label: 'Pollution Level',
-                                        data: [...pollutionHeatmap.data.datasets[0].data],
-                                        backgroundColor: '#3498db'
-                                    }]
-                                },
-                                options: {
-                                    responsive: true,
-                                    maintainAspectRatio: false,
-                                    plugins: {
-                                        title: {
-                                            display: true,
-                                            text: 'Pollution Heatmap'
-                                        }
-                                    }
-                                }
-                            });
-                            break;
-                    }
-                }, 100); // Small delay to ensure modal is rendered
+                    initializeModalCharts(title);
+                }, 100);
             }
         });
     });
-
-    // Update the real-time data updates to also update modal charts if they exist
-    setInterval(() => {
-        // Update sensor data with trends and anomalies
-        sensorData.CO = sensorData.CO.map((value, i) => 
-            detectAnomaly(generateTrendingData(value, 0.1, 0.5), 0.3)
-        );
-        sensorData.NOx = sensorData.NOx.map((value, i) => 
-            detectAnomaly(generateTrendingData(value, 0.2, 1), 0.4)
-        );
-        sensorData.NO2 = sensorData.NO2.map((value, i) => 
-            detectAnomaly(generateTrendingData(value, 0.15, 0.8), 0.35)
-        );
-
-        // Update environmental data with realistic patterns
-        envData.temperature = envData.temperature.map((value, i) => 
-            generateTrendingData(value, 0.05, 0.3)
-        );
-        envData.humidity = envData.humidity.map((value, i) => 
-            generateTrendingData(value, 0.1, 0.4)
-        );
-        envData.pressure = envData.pressure.map((value, i) => 
-            generateTrendingData(value, 0.02, 0.2)
-        );
-
-        // Update predictions
-        predictions.CO = [...sensorData.CO, predictNextValue(sensorData.CO)];
-
-        // Update charts
-        sensorTrendsChart.data.datasets[0].data = sensorData.CO;
-        sensorTrendsChart.data.datasets[1].data = sensorData.NOx;
-        sensorTrendsChart.data.datasets[2].data = sensorData.NO2;
-        sensorTrendsChart.update();
-
-        envContextChart.data.datasets[0].data = envData.temperature;
-        envContextChart.data.datasets[1].data = envData.humidity;
-        envContextChart.data.datasets[2].data = envData.pressure;
-        envContextChart.update();
-
-        // Update heatmap with new pollution levels
-        pollutionHeatmap.data.datasets[0].data = pollutionHeatmap.data.datasets[0].data.map(value =>
-            Math.max(0, Math.min(100, value + (Math.random() * 10 - 5)))
-        );
-        pollutionHeatmap.update();
-
-        // Update AI predictions
-        aiPredictionsChart.data.datasets[0].data = predictions.CO;
-        aiPredictionsChart.data.datasets[1].data = predictions.CO.map((_, i) => 
-            predictNextValue(predictions.CO.slice(0, i + 1))
-        );
-        aiPredictionsChart.update();
-
-        // Update AQI trends
-        const newAQI = Math.floor(Math.random() * 200);
-        aqiTrendsChart.data.datasets[0].data.shift();
-        aqiTrendsChart.data.datasets[0].data.push(newAQI);
-        aqiTrendsChart.update();
-
-        // Update pollutant analysis
-        pollutantAnalysisChart.data.datasets[0].data = [
-            (Math.random() * 5).toFixed(1),
-            (Math.random() * 30).toFixed(1),
-            (Math.random() * 2).toFixed(1)
-        ];
-        pollutantAnalysisChart.update();
-
-        // Update environmental conditions
-        environmentalConditionsChart.data.datasets[0].data.shift();
-        environmentalConditionsChart.data.datasets[0].data.push(20 + Math.random() * 5);
-        environmentalConditionsChart.data.datasets[1].data.shift();
-        environmentalConditionsChart.data.datasets[1].data.push(40 + Math.random() * 20);
-        environmentalConditionsChart.update();
-
-        // Update time analysis
-        timeAnalysisChart.data.datasets[0].data = timeAnalysisChart.data.datasets[0].data.map(value =>
-            Math.max(0, Math.min(100, value + (Math.random() * 10 - 5)))
-        );
-        timeAnalysisChart.update();
-
-        // Check for anomalies and update alerts
-        checkForAnomalies();
-
-        // Update modal charts if they exist
-        const modalCharts = {
-            'modalAqiTrendsChart': aqiTrendsChart,
-            'modalPollutantAnalysisChart': pollutantAnalysisChart,
-            'modalEnvironmentalConditionsChart': environmentalConditionsChart,
-            'modalTimeAnalysisChart': timeAnalysisChart,
-            'modalSensorTrendsChart': sensorTrendsChart,
-            'modalEnvContextChart': envContextChart,
-            'modalAiPredictionsChart': aiPredictionsChart,
-            'modalPollutionHeatmap': pollutionHeatmap
-        };
-
-        Object.entries(modalCharts).forEach(([modalId, sourceChart]) => {
-            const modalChart = Chart.getChart(modalId);
-            if (modalChart) {
-                modalChart.data = sourceChart.data;
-                modalChart.update();
-            }
-        });
-    }, 5000);
-
-    function checkForAnomalies() {
-        const lastCO = sensorData.CO[sensorData.CO.length - 1];
-        const lastNOx = sensorData.NOx[sensorData.NOx.length - 1];
-        const lastNO2 = sensorData.NO2[sensorData.NO2.length - 1];
-
-        if (lastCO > 4) {
-            addAlert(`Elevated CO levels detected (${lastCO.toFixed(1)} ppm)`);
-        }
-        if (lastNOx > 25) {
-            addAlert(`High NOx concentration (${lastNOx.toFixed(1)} ppb)`);
-        }
-        if (lastNO2 > 15) {
-            addAlert(`NO2 levels above threshold (${lastNO2.toFixed(1)} ppb)`);
-        }
-    }
-
-    function addAlert(message) {
-        const alertsList = document.querySelector('.alerts-list');
-        const now = new Date();
-        const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        
-        const alertItem = document.createElement('div');
-        alertItem.className = 'alert-item';
-        alertItem.innerHTML = `
-            <span class="alert-time">${timeString}</span>
-            <span class="alert-message">${message}</span>
-        `;
-        
-        alertsList.insertBefore(alertItem, alertsList.firstChild);
-        if (alertsList.children.length > 5) {
-            alertsList.removeChild(alertsList.lastChild);
-        }
-    }
 
     // Handle logout
     document.querySelector('.sidebar-footer .logout-link').addEventListener('click', function(e) {
@@ -972,10 +501,385 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle quick action buttons
     document.querySelectorAll('.action-button').forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent card click event
             const action = this.textContent;
             console.log(`Action clicked: ${action}`);
             // Add specific functionality for each action here
         });
     });
-}); 
+});
+
+// Chart Initialization
+function initializeCharts() {
+    // AQI Trends Chart
+    const aqiTrendsCtx = document.getElementById('aqiTrendsChart');
+    if (aqiTrendsCtx) {
+        new Chart(aqiTrendsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'AQI',
+                    data: [65, 59, 80, 81, 56, 55],
+                    borderColor: '#3498db',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+
+    // Pollutant Analysis Chart
+    const pollutantAnalysisCtx = document.getElementById('pollutantAnalysisChart');
+    if (pollutantAnalysisCtx) {
+        new Chart(pollutantAnalysisCtx, {
+            type: 'bar',
+            data: {
+                labels: ['PM2.5', 'PM10', 'NO2', 'SO2', 'O3', 'CO'],
+                datasets: [{
+                    label: 'Concentration',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: '#2ecc71'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+
+    // Environmental Conditions Chart
+    const environmentalConditionsCtx = document.getElementById('environmentalConditionsChart');
+    if (environmentalConditionsCtx) {
+        new Chart(environmentalConditionsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Temperature',
+                    data: [20, 22, 25, 23, 21, 24],
+                    borderColor: '#e74c3c',
+                    tension: 0.4
+                }, {
+                    label: 'Humidity',
+                    data: [65, 59, 80, 81, 56, 55],
+                    borderColor: '#3498db',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+
+    // Time Analysis Chart
+    const timeAnalysisCtx = document.getElementById('timeAnalysisChart');
+    if (timeAnalysisCtx) {
+        new Chart(timeAnalysisCtx, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                datasets: [{
+                    label: 'AQI',
+                    data: [65, 59, 80, 81, 56, 55],
+                    borderColor: '#9b59b6',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+
+    // Sensor Trends Chart
+    const sensorTrendsCtx = document.getElementById('sensorTrendsChart');
+    if (sensorTrendsCtx) {
+        new Chart(sensorTrendsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Sensor 1',
+                    data: [65, 59, 80, 81, 56, 55],
+                    borderColor: '#3498db',
+                    tension: 0.4
+                }, {
+                    label: 'Sensor 2',
+                    data: [28, 48, 40, 19, 86, 27],
+                    borderColor: '#2ecc71',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+
+    // Environmental Context Chart
+    const envContextCtx = document.getElementById('envContextChart');
+    if (envContextCtx) {
+        new Chart(envContextCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Temperature', 'Humidity', 'Wind Speed', 'Pressure', 'Rainfall', 'UV Index'],
+                datasets: [{
+                    label: 'Current',
+                    data: [65, 59, 90, 81, 56, 55],
+                    fill: true,
+                    backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                    borderColor: '#3498db',
+                    pointBackgroundColor: '#3498db',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#3498db'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+
+    // AI Predictions Chart
+    const aiPredictionsCtx = document.getElementById('aiPredictionsChart');
+    if (aiPredictionsCtx) {
+        new Chart(aiPredictionsCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Predicted',
+                    data: [65, 59, 80, 81, 56, 55],
+                    borderColor: '#e74c3c',
+                    tension: 0.4
+                }, {
+                    label: 'Actual',
+                    data: [28, 48, 40, 19, 86, 27],
+                    borderColor: '#2ecc71',
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+
+    // Pollution Heatmap
+    const pollutionHeatmapCtx = document.getElementById('pollutionHeatmap');
+    if (pollutionHeatmapCtx) {
+        new Chart(pollutionHeatmapCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Zone A', 'Zone B', 'Zone C', 'Zone D', 'Zone E'],
+                datasets: [{
+                    label: 'Pollution Level',
+                    data: [12, 19, 3, 5, 2],
+                    backgroundColor: [
+                        '#2ecc71',
+                        '#f1c40f',
+                        '#e67e22',
+                        '#e74c3c',
+                        '#c0392b'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    }
+}
+
+// Initialize modal charts
+function initializeModalCharts(title) {
+    switch (title) {
+        case 'Air Quality Analysis':
+            // Initialize AQI Trends Chart
+            new Chart(document.getElementById('modalAqiTrendsChart'), {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'AQI',
+                        data: [65, 59, 80, 81, 56, 55],
+                        borderColor: '#3498db',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Initialize Pollutant Analysis Chart
+            new Chart(document.getElementById('modalPollutantAnalysisChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['PM2.5', 'PM10', 'NO2', 'SO2', 'O3', 'CO'],
+                    datasets: [{
+                        label: 'Concentration',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: '#2ecc71'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Initialize Environmental Conditions Chart
+            new Chart(document.getElementById('modalEnvironmentalConditionsChart'), {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Temperature',
+                        data: [20, 22, 25, 23, 21, 24],
+                        borderColor: '#e74c3c',
+                        tension: 0.4
+                    }, {
+                        label: 'Humidity',
+                        data: [65, 59, 80, 81, 56, 55],
+                        borderColor: '#3498db',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+
+            // Initialize Time Analysis Chart
+            new Chart(document.getElementById('modalTimeAnalysisChart'), {
+                type: 'line',
+                data: {
+                    labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+                    datasets: [{
+                        label: 'AQI',
+                        data: [65, 59, 80, 81, 56, 55],
+                        borderColor: '#9b59b6',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+            break;
+
+        case 'Sensor Response Trends':
+            new Chart(document.getElementById('modalSensorTrendsChart'), {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Sensor 1',
+                        data: [65, 59, 80, 81, 56, 55],
+                        borderColor: '#3498db',
+                        tension: 0.4
+                    }, {
+                        label: 'Sensor 2',
+                        data: [28, 48, 40, 19, 86, 27],
+                        borderColor: '#2ecc71',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+            break;
+
+        case 'Environmental Context':
+            new Chart(document.getElementById('modalEnvContextChart'), {
+                type: 'radar',
+                data: {
+                    labels: ['Temperature', 'Humidity', 'Wind Speed', 'Pressure', 'Rainfall', 'UV Index'],
+                    datasets: [{
+                        label: 'Current',
+                        data: [65, 59, 90, 81, 56, 55],
+                        fill: true,
+                        backgroundColor: 'rgba(52, 152, 219, 0.2)',
+                        borderColor: '#3498db',
+                        pointBackgroundColor: '#3498db',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#3498db'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+            break;
+
+        case 'AI Predictions':
+            new Chart(document.getElementById('modalAiPredictionsChart'), {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Predicted',
+                        data: [65, 59, 80, 81, 56, 55],
+                        borderColor: '#e74c3c',
+                        tension: 0.4
+                    }, {
+                        label: 'Actual',
+                        data: [28, 48, 40, 19, 86, 27],
+                        borderColor: '#2ecc71',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+            break;
+
+        case 'Pollution Heatmap':
+            new Chart(document.getElementById('modalPollutionHeatmap'), {
+                type: 'bar',
+                data: {
+                    labels: ['Zone A', 'Zone B', 'Zone C', 'Zone D', 'Zone E'],
+                    datasets: [{
+                        label: 'Pollution Level',
+                        data: [12, 19, 3, 5, 2],
+                        backgroundColor: [
+                            '#2ecc71',
+                            '#f1c40f',
+                            '#e67e22',
+                            '#e74c3c',
+                            '#c0392b'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+            break;
+    }
+} 
