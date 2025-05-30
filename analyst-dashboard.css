@@ -1,14 +1,13 @@
 /* Analyst Dashboard Specific Styles */
 
 /* Dashboard Grid Layout */
-.dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    grid-template-rows: auto;
-    gap: 1rem;
-    padding: 1rem;
-    height: calc(100vh - 80px);
-    overflow: hidden;
+.analyst-dashboard-grid {
+    display: grid !important;
+    grid-template-columns: repeat(12, 1fr) !important;
+    gap: 0.5rem !important;
+    padding: 0.5rem !important;
+    height: calc(100vh - 80px) !important;
+    overflow-y: auto !important;
 }
 
 /* Card Sizes */
